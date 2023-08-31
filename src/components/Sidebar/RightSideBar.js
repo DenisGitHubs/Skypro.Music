@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import styles from './RightSideBar.module.css'
+import * as S from './Sidebar.styles'
+
 export default function RightSidebar({loading}) {
     return (
-      <div className={styles.sidebar__block}>
-        <div className={styles.sidebar__list}>
+      <S.SidebarBlock>
+        <S.SidebarList>
         <SidebarItemFun src="img/playlist01.png" srcAlt="img/playlistUnknown.png" loading={loading} />
         <SidebarItemFun src="img/playlist02.png" srcAlt="img/playlistUnknown.png" loading={loading} />
         <SidebarItemFun src="img/playlist03.png" srcAlt="img/playlistUnknown.png" loading={loading} />
-</div>
-</div>
+</S.SidebarList>
+</S.SidebarBlock>
     );
   }
 
@@ -17,14 +18,13 @@ export default function RightSidebar({loading}) {
     const src = props.src
     const srcAlt = props.srcAlt
     return (
-        <div className={styles.sidebar__item}>
-        <a className={styles.sidebar__link} href="#">
-          <img
-            className={styles.sidebar__img}
+        <S.SidebarItem>
+        <S.SidebarLink href="#">
+          <S.SidebarImg
             src={load ? srcAlt : src}
             alt="day's playlist"
           />
-        </a>
-      </div>
+        </S.SidebarLink>
+      </S.SidebarItem>
     );
   }

@@ -2,11 +2,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import './App.css';
-import DataSong from './components/DataTrack.js';
-import RightSidebar from './components/RightSideBar.js';
-import { Nav } from './components/Nav.js'
+import DataSong from './components/Tracks/DataTrack.js';
+import RightSidebar from './components/Sidebar/RightSideBar.js';
+import { Nav } from './components/NavMenu/Nav.js'
 import 'skeleton-elements/css';
-import { Filter } from "./components/SearchFilter.js";
+import { Filter } from "./components/SearchFilter/SearchFilter.js";
 
 const App = (props) => {
   const [loading, setLoading] = useState(false);

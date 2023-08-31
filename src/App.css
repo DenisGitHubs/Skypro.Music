@@ -154,19 +154,6 @@ body {
   margin-bottom: 45px;
 }
 
-.centerblock__filter {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-bottom: 51px;
-}
 
 .centerblock__content {
   display: -webkit-box;
@@ -236,13 +223,6 @@ body {
   line-height: 24px;
 }
 
-.filter__title {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  margin-right: 15px;
-}
 
 .filter__button {
   font-style: normal;
@@ -320,13 +300,6 @@ body {
   text-align: end;
 }
 
-.track__title-span {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4e4e4e;
-}
 
 .sidebar__personal {
   display: -webkit-box;
