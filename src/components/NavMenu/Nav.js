@@ -1,18 +1,18 @@
-
+import React from "react";
 import { useState } from 'react';
 import * as S from './Nav.styles'
 
   function NavHtml(props) {
     return (
         <S.MenuItem>
-        <S.MenuLink href="#">
+        <S.NewNavLink to={props.to} onClick={props.onAuthButtonClick}>
           {props.text}
-        </S.MenuLink>
+        </S.NewNavLink>
       </S.MenuItem>
     );
   }
 
-  export const Nav = () => {
+  export const Nav = ({ onAuthButtonClick }) => {
     const [visible, setVisible] = useState(false);
     const toggleVisibility = () => setVisible(!visible);
     return (
@@ -28,9 +28,9 @@ import * as S from './Nav.styles'
       {visible && (
         <S.NavMenu>
         <S.MenuList>
-                <NavHtml text="Главное" />
-                <NavHtml text="Мой плейлист" />
-                <NavHtml text="Войти" />
+                <NavHtml text="Главное" to="/"/>
+                <NavHtml text="Мой плейлист" to="/favorites"/>
+                <NavHtml text="Выйти" to="/login" onAuthButtonClick={onAuthButtonClick}/>
                 </S.MenuList>
                 </S.NavMenu>
         )}

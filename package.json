@@ -9,6 +9,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.3.1",
+    "react-router-dom": "^6.15.0",
     "react-scripts": "^5.0.1",
     "save": "^2.9.0",
     "skeleton-elements": "^4.0.1",

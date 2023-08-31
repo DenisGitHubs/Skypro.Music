@@ -93,51 +93,50 @@ function TrackTime(props) {
   )
 }
 
+// export default function DataSong({loading}) {
+
+//   return (
+//     <div>
+//       <TrackExecutorAlbumTime track="Guilt" executor="Nero" album="Welcome Reality" time="4:44" loading={loading} />
+//       <TrackExecutorAlbumTime track="Elektro" executor="Dynoro, Outwork, Mr. Gee" album="Elektro" time="2:22" loading={loading} />
+//       <TrackExecutorAlbumTime track="Iam Fire" executor="Ali Bakgor" album="I’m Fire" time="2:22" loading={loading} />
+//       <TrackExecutorAlbumTime track="Non Stop" secondname="(Remix)" executor="Стоункат, Psychopath" album="Non Stop" time="4:12" loading={loading} />
+//       <TrackExecutorAlbumTime track="Run Run" secondname="(feat. AR/CO)" executor="Jaded, Will Clarke, AR/CO" album="Run Run" time="2:54" loading={loading} />
+//       <TrackExecutorAlbumTime track="Eyes on Fire" secondname="(Zeds Dead Remix)" executor="Blue Foundation, Zeds Dead" album="Eyes on Fire" time="5:20" loading={loading} />
+//       <TrackExecutorAlbumTime track="Mucho Bien" secondname="(Hi Profile Remix)" executor="HYBIT, Mr. Black, Offer Nissim, Hi Profile" album="Mucho Bien" time="3:41" loading={loading} />
+//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
+//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
+//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
+//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
+//     </div>
+//   );
+// }
+
+
+  /// TO DO
+  const massiveData = [ 
+    {id: 1, track: "Guilt", executor: "Nero", album: "Welcome Reality", time: "4:44"},
+    {id: 2, track: "Elektro", executor: "Dynoro, Outwork, Mr. Gee", album: "Elektro", time: "2:22", secondname: ""},
+    {id: 3, track: "Iam Fire", executor: "Ali Bakgor", album: "Iam Fire", time: "2:22"},
+    {id: 4, track: "Non Stop", secondname: "(Remix)", executor: "Стоункат, Psychopath", album: "Non Stop", time: "4:12"},
+    {id: 5, track: "Run Run", secondname: "(feat. AR/CO)", executor: "Jaded, Will Clarke, AR/CO", album: "Run Run", time: "2:54"},
+    {id: 6, track: "Eyes on Fire", secondname: "(Zeds Dead Remix)", executor: "Blue Foundation, Zeds Dead", album: "Eyes on Fire", time: "5:20"},
+    {id: 7, track: "Mucho Bien", secondname: "(Hi Profile Remix)", executor: "HYBIT, Mr. Black, Offer Nissim, Hi Profile", album: "Mucho Bien", time: "3:41"},
+    {id: 8, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
+    {id: 9, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
+    {id: 10, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
+    {id: 11, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"}
+]
+
 export default function DataSong({loading}) {
 
   return (
     <div>
-      <TrackExecutorAlbumTime track="Guilt" executor="Nero" album="Welcome Reality" time="4:44" loading={loading} />
-      <TrackExecutorAlbumTime track="Elektro" executor="Dynoro, Outwork, Mr. Gee" album="Elektro" time="2:22" loading={loading} />
-      <TrackExecutorAlbumTime track="Iam Fire" executor="Ali Bakgor" album="I’m Fire" time="2:22" loading={loading} />
-      <TrackExecutorAlbumTime track="Non Stop" secondname="(Remix)" executor="Стоункат, Psychopath" album="Non Stop" time="4:12" loading={loading} />
-      <TrackExecutorAlbumTime track="Run Run" secondname="(feat. AR/CO)" executor="Jaded, Will Clarke, AR/CO" album="Run Run" time="2:54" loading={loading} />
-      <TrackExecutorAlbumTime track="Eyes on Fire" secondname="(Zeds Dead Remix)" executor="Blue Foundation, Zeds Dead" album="Eyes on Fire" time="5:20" loading={loading} />
-      <TrackExecutorAlbumTime track="Mucho Bien" secondname="(Hi Profile Remix)" executor="HYBIT, Mr. Black, Offer Nissim, Hi Profile" album="Mucho Bien" time="3:41" loading={loading} />
-      <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-      <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-      <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-      <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
+    {massiveData.map((item) => (
+      <TrackExecutorAlbumTime key={item.id} track={item.track} executor={item.executor} album={item.album} time={item.time} loading={loading} />
+    ))}
     </div>
+
   );
 }
-
-
-  /// TO DO
-//   const MassiveData = [ 
-//     {id: 1, track: "Guilt", executor: "Nero", album: "Welcome Reality", time: "4:44"},
-//     {id: 1, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 2, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 3, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 4, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 5, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 6, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 7, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 8, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 9, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 10, track: "", executor: "", album: "", time: "", loading: "", secondname: ""},
-//     {id: 11, track: "", executor: "", album: "", time: "", loading: "", secondname: ""}
-// ]
-
-// export default function DataSong({loading}) {
-
-//   return (
-//     MassiveData.map(item => {
-//       <div>
-//       <TrackExecutorAlbumTime track={item.track} executor={item.executor} album="Welcome Reality" time="4:44" loading={loading} />
-//     </div>
-//     })
-
-//   );
-// }
 
