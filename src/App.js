@@ -5,31 +5,23 @@ import { AppRoutes } from "./pages/routers/routers";
 import './css/signin.css';
 import './css/signup.css';
 import { useState } from "react";
-
-
-// const App = () => {
-
-//   return (
-//     <>
-//     <meta charSet="UTF-8" />
-//     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-//     <link rel="stylesheet" href="./App.css" />
-//     <title>Skypro</title>
-//     <div className="wrapper">
-//     <AppRoutes />
-//     </div>
-//   </>
-//   );
-// };
+import { getAllTracks } from './Api';
 
 function App() {
   const [user, setUser] = useState('');
-
+  const [allTracks, setAllTracks] = useState(null);
+  const [player, setPlayer] = useState(false);
+  const [trackName, setTrackName] = useState('');
+  const [songerName, setSongerName] = useState('');
   const login = () => setUser("taradam" );
   const logout = () => setUser('');
   localStorage.setItem("user", user);
-  console.log(localStorage["user"]);
+  // useEffect(() => {
+  //   getAllTracks().then((tracks) => {console.log(tracks);
+  //     // setAllTracks(.todos)
+  //   })
+  // }, []);
+
   return (
 
     <>
@@ -39,7 +31,14 @@ function App() {
     <link rel="stylesheet" href="./App.css" />
     <title>Skypro</title>
     <div className="wrapper">
-    <AppRoutes user={localStorage["user"]} onAuthButtonClick={localStorage["user"] ? logout : login}/>
+    <AppRoutes player={player} 
+    setPlayer={setPlayer} 
+    user={localStorage["user"]}
+    trackName={trackName}
+    setTrackName={setTrackName}
+    songerName={songerName}
+    setSongerName={setSongerName}
+    onAuthButtonClick={localStorage["user"] ? logout : login}/>
     </div>
   </>
 

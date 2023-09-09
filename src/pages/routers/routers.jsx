@@ -7,7 +7,7 @@ import { Favorites } from "../favorites"
 import { Category } from "../category";
 import { ProtectedRoute } from "../protect-road";
 
-export const AppRoutes = ({ user, onAuthButtonClick }) => {
+export const AppRoutes = ({ user, onAuthButtonClick, player, setPlayer, trackName, setTrackName, songerName, setSongerName}) => {
   return (
     <Routes>
     <Route path="/login" element={<Login user={user} onAuthButtonClick={onAuthButtonClick}/>} />
@@ -15,7 +15,13 @@ export const AppRoutes = ({ user, onAuthButtonClick }) => {
     <Route element={<ProtectedRoute isAllowed={Boolean(user)} />}>
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/category/:id" element={<Category />} />
-        <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}/>} />
+        <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}
+         player={player}
+          setPlayer={setPlayer}
+          trackName={trackName}
+          setTrackName={setTrackName}
+          songerName={songerName}
+          setSongerName={setSongerName}/>} />
       </Route>
 
     <Route path="*" element={<NotFound />} />
