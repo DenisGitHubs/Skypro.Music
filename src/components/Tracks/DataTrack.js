@@ -3,11 +3,19 @@ import {SkeletonBlock} from 'skeleton-elements/react';
 
 function TrackExecutorAlbumTime(props) {
   const load = props.loading
+
     return (              <S.PlaylistItem>
     <S.PlaylistTrack>
       <S.TrackTitle>
       <TrackTitle />
-      <TrackName track={props.track} secondname={props.secondname} loading={load}/>
+      <TrackName player={props.player}
+       setPlayer={props.setPlayer}
+        track={props.track}
+         secondname={props.secondname}
+          loading={load}
+          setTrackName={props.setTrackName}
+          setSongerName={props.setSongerName}
+          executor={props.executor}/>
       </S.TrackTitle>
       <TrackExecutor executor={props.executor} loading={load}/>
       <TrackAlbum album={props.album} loading={load}/>
@@ -27,9 +35,14 @@ function TrackTitle() {
 }
 function TrackName(props) {
 const load = props.loading;
+function HandleChoiceSong(props) {
+  props.setPlayer(true);
+  props.setTrackName(props.track);
+  props.setSongerName(props.executor);
+}
 if (!load) {
   return (<div>
-    <S.TrackTitleLink href="http://">{props.track}
+    <S.TrackTitleLink onClick={() => HandleChoiceSong(props)}>{props.track}
     <S.TrackTitleSpan>{props.secondname} </S.TrackTitleSpan>
     </S.TrackTitleLink>
   </div>
@@ -93,27 +106,6 @@ function TrackTime(props) {
   )
 }
 
-// export default function DataSong({loading}) {
-
-//   return (
-//     <div>
-//       <TrackExecutorAlbumTime track="Guilt" executor="Nero" album="Welcome Reality" time="4:44" loading={loading} />
-//       <TrackExecutorAlbumTime track="Elektro" executor="Dynoro, Outwork, Mr. Gee" album="Elektro" time="2:22" loading={loading} />
-//       <TrackExecutorAlbumTime track="Iam Fire" executor="Ali Bakgor" album="I’m Fire" time="2:22" loading={loading} />
-//       <TrackExecutorAlbumTime track="Non Stop" secondname="(Remix)" executor="Стоункат, Psychopath" album="Non Stop" time="4:12" loading={loading} />
-//       <TrackExecutorAlbumTime track="Run Run" secondname="(feat. AR/CO)" executor="Jaded, Will Clarke, AR/CO" album="Run Run" time="2:54" loading={loading} />
-//       <TrackExecutorAlbumTime track="Eyes on Fire" secondname="(Zeds Dead Remix)" executor="Blue Foundation, Zeds Dead" album="Eyes on Fire" time="5:20" loading={loading} />
-//       <TrackExecutorAlbumTime track="Mucho Bien" secondname="(Hi Profile Remix)" executor="HYBIT, Mr. Black, Offer Nissim, Hi Profile" album="Mucho Bien" time="3:41" loading={loading} />
-//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-//       <TrackExecutorAlbumTime track="Knives n Cherries" executor="minthaze" album="Captivating" time="1:48" loading={loading} />
-//     </div>
-//   );
-// }
-
-
-  /// TO DO
   const massiveData = [ 
     {id: 1, track: "Guilt", executor: "Nero", album: "Welcome Reality", time: "4:44"},
     {id: 2, track: "Elektro", executor: "Dynoro, Outwork, Mr. Gee", album: "Elektro", time: "2:22", secondname: ""},
@@ -128,12 +120,23 @@ function TrackTime(props) {
     {id: 11, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"}
 ]
 
-export default function DataSong({loading}) {
+export default function DataSong({loading, player, setPlayer, setTrackName, setSongerName}) {
 
   return (
     <div>
     {massiveData.map((item) => (
-      <TrackExecutorAlbumTime key={item.id} track={item.track} executor={item.executor} album={item.album} time={item.time} loading={loading} />
+      <TrackExecutorAlbumTime 
+      player={player}
+       setPlayer={setPlayer}
+        key={item.id}
+         track={item.track}
+          executor={item.executor}
+           album={item.album}
+            time={item.time}
+             loading={loading}
+             setTrackName={setTrackName}
+             setSongerName={setSongerName}
+             />
     ))}
     </div>
 
