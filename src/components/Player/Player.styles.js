@@ -137,13 +137,13 @@ export const Bar = styled.div `
   export const PlayerTrackPlay = styled.div`
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
+
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
   `
-
+  // display: flex;
   export const TrackPlayContain = styled.div`
   width: auto;
   display: -ms-grid;
@@ -251,3 +251,6 @@ export const Bar = styled.div `
   width: 109px;
   cursor: pointer;
   `
+
+
+  

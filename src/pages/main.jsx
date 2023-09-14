@@ -7,7 +7,8 @@ import { Filter } from "../components/SearchFilter/SearchFilter.js";
 import React, { useState, useEffect } from "react";
 import Player from '../components/Player/Player';
 
-export const Main = ({ onAuthButtonClick, player, setPlayer, trackName, setTrackName, songerName, setSongerName }) => {
+
+export const Main = ({ onAuthButtonClick, player, setPlayer, massiveData, songerName, trackName, setTrackName, setSongerName, setAllTracks, error  }) => {
     const [loading, setLoading] = useState(false);
     useEffect(() => {
       setLoading(true);
@@ -16,6 +17,7 @@ export const Main = ({ onAuthButtonClick, player, setPlayer, trackName, setTrack
       }, 5000);
       return () => clearTimeout(timer);
     }, []);
+
     const text = "";
     return (
         <div className="container">
@@ -51,8 +53,10 @@ export const Main = ({ onAuthButtonClick, player, setPlayer, trackName, setTrack
   <DataSong loading={loading}
    player={player}
     setPlayer={setPlayer}
+    massiveData={massiveData} 
     setTrackName={setTrackName}
-    setSongerName={setSongerName}/>
+    setSongerName={setSongerName}
+ />
               </div>
             </div>
           </div>
@@ -68,7 +72,7 @@ export const Main = ({ onAuthButtonClick, player, setPlayer, trackName, setTrack
   <RightSidebar loading={loading}/>
           </div>
         </main>
-        {player ? <Player loading={loading} text={text} songerName={songerName} trackName={trackName}/> : null}
+        {player ? <Player songerName={songerName} trackName={trackName}loading={loading} text={text}/> : null}
         <footer className="footer" />
       </div>
     );
