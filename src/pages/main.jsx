@@ -8,7 +8,28 @@ import React, { useState, useEffect } from "react";
 import Player from '../components/Player/Player';
 
 
-export const Main = ({ onAuthButtonClick, player, setPlayer, massiveData, songerName, trackName, setTrackName, setSongerName, setAllTracks, error  }) => {
+export const Main = ({ 
+  onAuthButtonClick, 
+  player, setPlayer, 
+  massiveData, songerName, 
+  trackName, setTrackName, 
+  setSongerName, 
+  setAllTracks,
+  error,
+  isPlaying,
+  setIsPlaying,
+  song,
+  setSong,
+  allTracks,
+  duration,
+  setDuration,
+  changeDuration,
+  setChangeDuration,
+  setIsLoop,
+  isLoop
+
+ }) => {
+
     const [loading, setLoading] = useState(false);
     useEffect(() => {
       setLoading(true);
@@ -51,11 +72,14 @@ export const Main = ({ onAuthButtonClick, player, setPlayer, massiveData, songer
               </div>
               <div className="content__playlist playlist">
   <DataSong loading={loading}
-   player={player}
+    player={player}
     setPlayer={setPlayer}
     massiveData={massiveData} 
     setTrackName={setTrackName}
     setSongerName={setSongerName}
+    setSong={setSong}
+    setDuration={setDuration}
+    setIsPlaying={setIsPlaying}
  />
               </div>
             </div>
@@ -72,7 +96,25 @@ export const Main = ({ onAuthButtonClick, player, setPlayer, massiveData, songer
   <RightSidebar loading={loading}/>
           </div>
         </main>
-        {player ? <Player songerName={songerName} trackName={trackName}loading={loading} text={text}/> : null}
+        {player ? <Player 
+        songerName={songerName}
+        trackName={trackName}
+        loading={loading} 
+        text={text}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        song={song}
+        allTracks={allTracks}
+        setSong={setSong}
+        setTrackName={setTrackName}
+        setSongerName={setSongerName}
+        duration={duration}
+        setDuration={setDuration}
+        changeDuration={changeDuration}
+        setChangeDuration={setChangeDuration}
+        setIsLoop={setIsLoop}
+        isLoop={isLoop}
+        /> : null}
         <footer className="footer" />
       </div>
     );

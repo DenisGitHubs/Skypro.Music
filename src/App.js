@@ -21,14 +21,19 @@ function App() {
     {id: 8, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
     {id: 9, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
     {id: 10, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
-    {id: 11, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"}
+    {id: 11, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"},
+    {id: 12, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"}
 ]);
   const [player, setPlayer] = useState(false);
   const [trackName, setTrackName] = useState('');
   const [songerName, setSongerName] = useState('');
   const [timeToLoadData, setTimeToLoadData] = useState(false);
   const [newError, setNewError] = useState(null);
-  // const [error, setError] = useState (null)
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isLoop, setIsLoop] = useState(false)
+  const [song, setSong] = useState(null);
+  const [duration, setDuration] = useState(null);
+  const [changeDuration, setChangeDuration] = useState(0)
   const login = () => setUser("taradam" );
   const logout = () => setUser('');
   localStorage.setItem("user", user);
@@ -71,6 +76,17 @@ let  massiveData = allTracks
     setTimeToLoadData={setTimeToLoadData}
     timeToLoadData={timeToLoadData}
     setAllTracks={setAllTracks}
+    isPlaying={isPlaying}
+    setIsPlaying={setIsPlaying}
+    song={song}
+    setSong={setSong}
+    allTracks={allTracks}
+    duration={duration}
+    setDuration={setDuration}
+    changeDuration={changeDuration}
+    setChangeDuration={setChangeDuration}
+    setIsLoop={setIsLoop}
+    isLoop={isLoop}
     onAuthButtonClick={localStorage["user"] ? logout : login}/>
     </div>
   </>

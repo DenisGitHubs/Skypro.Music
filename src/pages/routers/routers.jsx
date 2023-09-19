@@ -19,7 +19,19 @@ export const AppRoutes = ({ user,
           setTimeToLoadData,
           timeToLoadData,
           setAllTracks,
-          error
+          error,
+          isPlaying,
+          setIsPlaying,
+          song,
+          setSong,
+          allTracks,
+          duration,
+          setDuration,
+          changeDuration,
+          setChangeDuration,
+          setIsLoop,
+          isLoop,
+
         }) => {
   return (
     <Routes>
@@ -42,6 +54,17 @@ export const AppRoutes = ({ user,
          setTrackName={setTrackName}
          setSongerName={setSongerName}
          setAllTracks={setAllTracks}
+         isPlaying={isPlaying}
+         setIsPlaying={setIsPlaying}
+         song={song}
+         setSong={setSong}
+         allTracks={allTracks}
+         duration={duration}
+         setDuration={setDuration}
+         changeDuration={changeDuration}
+         setChangeDuration={setChangeDuration}
+         setIsLoop={setIsLoop}
+         isLoop={isLoop}
 />} />
       </Route>
 
