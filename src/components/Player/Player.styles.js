@@ -18,11 +18,11 @@ export const Bar = styled.div `
     flex-direction: column;
   `
 
-  export const BarPlayerProgress = styled.div`
-  width: 100%;
-  height: 5px;
-  background: #2e2e2e;
-  `
+  // export const BarPlayerProgress = styled.div`
+  // width: 100%;
+  // height: 5px;
+  // background: #2e2e2e;
+  // `
 
   export const BarPlayerBlock = styled.div`
   height: 73px;
@@ -74,6 +74,7 @@ export const Bar = styled.div `
   -ms-flex-align: center;
   align-items: center;
   margin-right: 23px;
+  cursor: pointer;
   `
 
   export const PlayerBtnPrevSvg = styled.svg`
@@ -109,6 +110,7 @@ export const Bar = styled.div `
   align-items: center;
   margin-right: 28px;
   fill: #a53939;
+  cursor: pointer;
   `
 
   export const PlayerBtnNextSvg = styled.svg`
@@ -252,5 +254,65 @@ export const Bar = styled.div `
   cursor: pointer;
   `
 
+  export const StyledProgressInput = styled.input`
+  --progress-height: 8px;
+  --progress-color: #b672ff;
+  --progress-color: ${(props) => props.$color ?? "#b672ff"};
 
-  
+  --progress-bg-color: #2e2e2e;
+
+  margin: 0;
+  width: 100%;
+  height: var(--progress-height);
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+
+  &::-webkit-slider-runnable-track {
+    position: relative;
+    height: var(--progress-height);
+    background: var(--progress-bg-color);
+  }
+  &::-webkit-slider-thumb {
+    --thumb-height: 1px;
+    --thumb-width: 1px;
+    position: relative;
+    -webkit-appearance: none;
+    width: var(--thumb-width, var(--thumb-height));
+    box-shadow: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0
+      100vmax var(--progress-color);
+  }
+
+  &::-webkit-slider-runnable-track {
+    background: var(--progress-bg-color);
+  }
+
+  /* FF */
+  &::-moz-range-track {
+    width: 100%;
+    height: var(--progress-height);
+    background: var(--progress-bg-color);
+    border: none;
+    border-radius: 0px;
+  }
+  &::-moz-range-thumb {
+    border: none;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background: transparent;
+  }
+  &::-moz-range-progress {
+    background-color: var(--progress-color);
+    height: var(--progress-height);
+  }
+`;
+export const TrackTimeText = styled.span`
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+text-align: right;
+color: #696969;`

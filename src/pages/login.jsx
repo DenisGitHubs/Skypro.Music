@@ -5,7 +5,6 @@ export const Login = ({ user, onAuthButtonClick, setTimeToLoadData, timeToLoadDa
     const timer = setTimeout(() => {
       setTimeToLoadData(false);
     }, 1000);
-    // temporary
     return () => clearTimeout(timer);
   }, []);
   return (

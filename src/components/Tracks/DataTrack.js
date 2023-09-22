@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { getAllTracks } from '../../Api';
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
@@ -17,7 +18,13 @@ function TrackExecutorAlbumTime(props) {
           loading={load}
           setTrackName={props.setTrackName}
           setSongerName={props.setSongerName}
-          executor={props.executor}/>
+          executor={props.executor}
+          setSong={props.setSong}
+          src={props.src}
+          setDuration={props.setDuration}
+          time={props.time}
+          setIsPlaying={props.setIsPlaying}
+          />
       </S.TrackTitle>
       <TrackExecutor executor={props.executor} loading={load}/>
       <TrackAlbum album={props.album} loading={load}/>
@@ -36,10 +43,13 @@ function TrackTitle() {
 }
 function TrackName(props) {
 const load = props.loading;
+
 function HandleChoiceSong(props) {
   props.setPlayer(true);
   props.setTrackName(props.track);
   props.setSongerName(props.executor);
+  props.setSong(props.src);
+  props.setIsPlaying(true)
 }
 if (!load) {
   return (<div>
@@ -97,12 +107,23 @@ function TrackAlbum(props) {
 }
 function TrackTime(props) {
   const load = props.loading;
+  const min = parseInt((props.time/60));
+  const sec = time();
+  function time () {
+    const time = props.time % 60;
+    if (time < 9) {
+      return `0${time}`
+    } else {
+      return time
+    }
+  }
+
     return (
     <div className="track__time">
     <S.TrackTimeSvg alt="time">
       <use xlinkHref="img/icon/sprite.svg#icon-like" />
     </S.TrackTimeSvg>
-    <S.TrackTimeText >{load ? "0:00" : props.time}</S.TrackTimeText>
+    <S.TrackTimeText >{load ? "0:00" : `${min}:${sec}`}</S.TrackTimeText>
   </div>
   )
 }
@@ -121,8 +142,8 @@ function TrackTime(props) {
 //     {id: 11, track: "Knives n Cherries", executor: "minthaze", album: "Captivating", time: "1:48"}
 // ]
 
-export default function DataSong({loading, player, setPlayer, massiveData, setTrackName, setSongerName }) {
-
+export default function DataSong({loading, player, setPlayer, massiveData, setTrackName, setSongerName, setSong, setDuration, setIsPlaying}) {
+  
   return (
     <div>
     {massiveData.map((item) => (
@@ -137,6 +158,10 @@ export default function DataSong({loading, player, setPlayer, massiveData, setTr
              loading={loading}
              setTrackName={setTrackName}
              setSongerName={setSongerName}
+             setSong={setSong}
+             src={item.id}
+             setDuration={setDuration}
+             setIsPlaying={setIsPlaying}
              />
     ))}
     </div>
