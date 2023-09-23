@@ -1,18 +1,27 @@
 import React from "react";
 import { useState } from 'react';
 import * as S from './Nav.styles'
+import { useNavigate } from "react-router-dom";
 
   function NavHtml(props) {
     return (
         <S.MenuItem>
-        <S.NewNavLink to={props.to} onClick={props.onAuthButtonClick}>
+        <S.NewNavLink to={props.to} onClick={props.logout}>
           {props.text}
         </S.NewNavLink>
       </S.MenuItem>
     );
   }
 
-  export const Nav = ({ onAuthButtonClick }) => {
+  export const Nav = ({ setBearer }) => {
+
+    const navigate = useNavigate();
+    const logout = () => {
+      localStorage.removeItem('Active')
+      navigate('/login')
+      setBearer(null)
+
+    }
     const [visible, setVisible] = useState(false);
     const toggleVisibility = () => setVisible(!visible);
     return (
@@ -30,7 +39,7 @@ import * as S from './Nav.styles'
         <S.MenuList>
                 <NavHtml text="Главное" to="/"/>
                 <NavHtml text="Мой плейлист" to="/favorites"/>
-                <NavHtml text="Выйти" to="/login" onAuthButtonClick={onAuthButtonClick}/>
+                <NavHtml text="Выйти" to="/login" logout={logout}/>
                 </S.MenuList>
                 </S.NavMenu>
         )}

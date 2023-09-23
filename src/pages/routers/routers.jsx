@@ -4,11 +4,12 @@ import { Main } from "../main";
 import { Favorites } from "../favorites"
 import { Category } from "../category";
 import { ProtectedRoute } from "../protect-road";
-import ParentAuth from "../authpage/AuthPage";
+import {ParentAuth} from "../authpage/ParentAuthPage";
 
 
 
-export const AppRoutes = ({ user,
+export const AppRoutes = ({
+  bearer,
    onAuthButtonClick,
     player,
      setPlayer,
@@ -29,17 +30,18 @@ export const AppRoutes = ({ user,
           setChangeDuration,
           setIsLoop,
           isLoop,
-
+          setBearer
 
         }) => {
 
   return (
     <>
     <Routes>
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/category/:id" element={<Category />} />
           <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}
+          setBearer={setBearer}
             player={player}
             setPlayer={setPlayer}
             massiveData={massiveData}
@@ -62,12 +64,12 @@ export const AppRoutes = ({ user,
         </Route>
         <Route
         path="/login"
-        element={<ParentAuth isLoginMode={true}></ParentAuth>}
+        element={<ParentAuth  isloginmode={true} setBearer={setBearer} ></ParentAuth>}
       ></Route>
 
       <Route
         path="/register"
-        element={<ParentAuth isLoginMode={false}></ParentAuth>}
+        element={<ParentAuth  isloginmode={false} setBearer={setBearer}></ParentAuth>}
       ></Route>
         <Route path="*" element={<NotFound />} />
 
@@ -75,11 +77,3 @@ export const AppRoutes = ({ user,
 
   );
 };
-
-/* <Route path="/login" element={<Login 
-  user={user}
-   onAuthButtonClick={onAuthButtonClick}
-   setTimeToLoadData={setTimeToLoadData}
-   timeToLoadData={timeToLoadData}
-  />} />
-  <Route path="/register" element={<Registration />} /> */

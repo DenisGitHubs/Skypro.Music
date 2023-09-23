@@ -6,6 +6,7 @@ import 'skeleton-elements/css';
 import { Filter } from "../components/SearchFilter/SearchFilter.js";
 import React, { useState, useEffect } from "react";
 import Player from '../components/Player/Player';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Main = ({ 
@@ -26,9 +27,18 @@ export const Main = ({
   changeDuration,
   setChangeDuration,
   setIsLoop,
-  isLoop
+  isLoop,
+  setBearer
 
  }) => {
+  const navigate = useNavigate();
+    const logout = () => {
+      localStorage.removeItem('Active')
+      navigate('/login')
+      setBearer(null)
+
+    }
+    const userName = JSON.parse(localStorage.getItem('Active')).Name
 
     const [loading, setLoading] = useState(false);
     useEffect(() => {
@@ -44,7 +54,7 @@ export const Main = ({
         <div className="container">
         <main className="main">
           
-  <Nav onAuthButtonClick={onAuthButtonClick}/>
+  <Nav   setBearer={ setBearer}/>
           <div className="main__centerblock centerblock">
             <div className="centerblock__search search">
               <svg className="search__svg">
@@ -86,8 +96,8 @@ export const Main = ({
           </div>
           <div className="main__sidebar sidebar">
             <div className="sidebar__personal">
-              <p className="sidebar__personal-name">Sergey.Ivanov</p>
-              <div className="sidebar__icon">
+              <p className="sidebar__personal-name">{userName}</p>
+              <div className="sidebar__icon" onClick={logout}>
                 <svg alt="logout">
                   <use xlinkHref="img/icon/sprite.svg#logout" />
                 </svg>

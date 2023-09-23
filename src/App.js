@@ -4,8 +4,9 @@ import './App.css';
 import { AppRoutes } from "./pages/routers/routers";
 import './css/signin.css';
 import './css/signup.css';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllTracks } from './Api';
+
 
 
 function App() {
@@ -33,29 +34,22 @@ function App() {
   const [song, setSong] = useState(null);
   const [duration, setDuration] = useState(null);
   const [changeDuration, setChangeDuration] = useState(0)
+  const [bearer, setBearer] = useState(JSON.parse(localStorage.getItem('Active')))
 
 
-// useEffect(() => {
-// // localStorage.removeItem('activeUser')
-//   let userReg = JSON.parse(localStorage.getItem('activeUser'))
-//   if (!userReg) {
-//     const activeUser = { username: `${email}`, email: `${email}`, password: `${password}`, repeatPassword: `${repeatPassword}` }
-//     localStorage.setItem('activeUser', JSON.stringify(activeUser));
-//     return
-//   }
-//   setEmail(userReg.email)
-//   setPassword(userReg.password)
-//   setRepeatPassword(userReg.repeatPassword)
-//   // dataUser.activeUser.email = email
-//   // dataUser.activeUser.username = email
-//   // dataUser.activeUser.password = password
-//   // dataUser.activeUser.repeatPassword = repeatPassword
-//   const activeUser = { username: `${email}`, email: `${email}`, password: `${password}`, repeatPassword: `${repeatPassword}` }
-//   localStorage.setItem('activeUser', JSON.stringify(activeUser));
-
-// }, []);
-
-
+//   useEffect(() => {
+// if (!bearer) {
+//   console.log(isAllowed);
+//   console.log('No');
+// return
+// } 
+// if (bearer) {
+//   console.log('Yes');
+//   setIsAllowed(true);
+//   console.log(isAllowed);
+//   return
+// }
+// }, [bearer]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -85,7 +79,8 @@ let  massiveData = allTracks
     <title>Skypro</title>
     <div className="wrapper">
     <AppRoutes
-
+    setBearer={setBearer}
+    bearer={bearer}
     massiveData={massiveData}
     songerName={songerName}
     trackName={trackName}
@@ -113,6 +108,4 @@ let  massiveData = allTracks
 
   );
 }
-
-// onAuthButtonClick={localStorage["user"] ? logout : login}
 export default App;
