@@ -4,12 +4,12 @@ import './App.css';
 import { AppRoutes } from "./pages/routers/routers";
 import './css/signin.css';
 import './css/signup.css';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllTracks } from './Api';
 
 
+
 function App() {
-  const [user, setUser] = useState('');
   const [allTracks, setAllTracks] = useState([ 
     {id: 1, track: "Guilt", executor: "Nero", album: "Welcome Reality", time: "4:44"},
     {id: 2, track: "Elektro", executor: "Dynoro, Outwork, Mr. Gee", album: "Elektro", time: "2:22", secondname: ""},
@@ -34,9 +34,23 @@ function App() {
   const [song, setSong] = useState(null);
   const [duration, setDuration] = useState(null);
   const [changeDuration, setChangeDuration] = useState(0)
-  const login = () => setUser("taradam" );
-  const logout = () => setUser('');
-  localStorage.setItem("user", user);
+  const [bearer, setBearer] = useState(JSON.parse(localStorage.getItem('Active')))
+
+
+//   useEffect(() => {
+// if (!bearer) {
+//   console.log(isAllowed);
+//   console.log('No');
+// return
+// } 
+// if (bearer) {
+//   console.log('Yes');
+//   setIsAllowed(true);
+//   console.log(isAllowed);
+//   return
+// }
+// }, [bearer]);
+
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -65,7 +79,8 @@ let  massiveData = allTracks
     <title>Skypro</title>
     <div className="wrapper">
     <AppRoutes
-    user={localStorage["user"]}
+    setBearer={setBearer}
+    bearer={bearer}
     massiveData={massiveData}
     songerName={songerName}
     trackName={trackName}
@@ -87,12 +102,10 @@ let  massiveData = allTracks
     setChangeDuration={setChangeDuration}
     setIsLoop={setIsLoop}
     isLoop={isLoop}
-    onAuthButtonClick={localStorage["user"] ? logout : login}/>
+    />
     </div>
   </>
 
   );
 }
-
-
 export default App;

@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { getAllTracks } from '../../Api';
+
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
 

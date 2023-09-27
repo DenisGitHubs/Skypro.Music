@@ -4,12 +4,13 @@ import { Main } from "../main";
 import { Favorites } from "../favorites"
 import { Category } from "../category";
 import { ProtectedRoute } from "../protect-road";
-import {ParentAuth} from "../authpage/ParentAuthPage";
+import AuthPage from "../authpage/AuthPage";
+import { ActiveUserContext } from "../../context/login.context";
+import { useContext, useState } from "react";
+import { dataUser } from "../../context/login.context";
 
 
-
-export const AppRoutes = ({
-  bearer,
+export const AppRoutes = ({ user,
    onAuthButtonClick,
     player,
      setPlayer,
@@ -18,7 +19,10 @@ export const AppRoutes = ({
         trackName,
          setTrackName,
           setSongerName,
+          setTimeToLoadData,
+          timeToLoadData,
           setAllTracks,
+          error,
           isPlaying,
           setIsPlaying,
           song,
@@ -30,18 +34,36 @@ export const AppRoutes = ({
           setChangeDuration,
           setIsLoop,
           isLoop,
-          setBearer
+          setEmail,
+          setPassword,
+          setRepeatPassword
 
         }) => {
 
   return (
-    <>
-    <Routes>
-        <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
+    <><Routes>
+
+      <Route
+        path="/login"
+        element={<ActiveUserContext.Provider value= {dataUser} ><AuthPage isLoginMode={true}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        setRepeatPassword={setRepeatPassword} ></AuthPage></ActiveUserContext.Provider>}
+      ></Route>
+
+      <Route
+        path="/register"
+        element={<ActiveUserContext.Provider value={dataUser} ><AuthPage isLoginMode={false}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          setRepeatPassword={setRepeatPassword}></AuthPage></ActiveUserContext.Provider>}
+      ></Route>
+
+    </Routes><Routes>
+        <Route element={<ProtectedRoute isAllowed={Boolean(user)} />}>
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/category/:id" element={<Category />} />
           <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}
-          setBearer={setBearer}
             player={player}
             setPlayer={setPlayer}
             massiveData={massiveData}
@@ -62,18 +84,18 @@ export const AppRoutes = ({
             setIsLoop={setIsLoop}
             isLoop={isLoop} />} />
         </Route>
-        <Route
-        path="/login"
-        element={<ParentAuth  isloginmode={true} setBearer={setBearer} ></ParentAuth>}
-      ></Route>
 
-      <Route
-        path="/register"
-        element={<ParentAuth  isloginmode={false} setBearer={setBearer}></ParentAuth>}
-      ></Route>
         <Route path="*" element={<NotFound />} />
 
       </Routes></>
 
   );
 };
+
+/* <Route path="/login" element={<Login 
+  user={user}
+   onAuthButtonClick={onAuthButtonClick}
+   setTimeToLoadData={setTimeToLoadData}
+   timeToLoadData={timeToLoadData}
+  />} />
+  <Route path="/register" element={<Registration />} /> */
