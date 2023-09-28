@@ -7,21 +7,21 @@ import { Filter } from "../components/SearchFilter/SearchFilter.js";
 import React, { useState, useEffect } from "react";
 import Player from '../components/Player/Player';
 import { useNavigate } from 'react-router-dom';
+import { getAllTracks } from '../Api';
+import { useDispatch, useSelector } from 'react-redux';
+import { dataSongs } from '../store/player.slice';
 
 
 export const Main = ({ 
-  onAuthButtonClick, 
-  player, setPlayer, 
-  massiveData, songerName, 
+  setNewError,
+ songerName, 
   trackName, setTrackName, 
   setSongerName, 
-  setAllTracks,
   error,
   isPlaying,
   setIsPlaying,
   song,
   setSong,
-  allTracks,
   duration,
   setDuration,
   changeDuration,
@@ -31,6 +31,25 @@ export const Main = ({
   setBearer
 
  }) => {
+const flagPlayer = useSelector(state => state.player.flagPlayer)
+const dispatch = useDispatch()
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        getAllTracks().then((tracks) => {
+          dispatch(dataSongs({tracks}))
+
+        })
+  
+      } catch (error) {
+        setNewError(error.message)
+      }
+  
+    }
+  fetchData()
+  }, []);
+
+
   const navigate = useNavigate();
     const logout = () => {
       localStorage.removeItem('Active')
@@ -82,14 +101,13 @@ export const Main = ({
               </div>
               <div className="content__playlist playlist">
   <DataSong loading={loading}
-    player={player}
-    setPlayer={setPlayer}
-    massiveData={massiveData} 
+    isPlaying={isPlaying}
     setTrackName={setTrackName}
     setSongerName={setSongerName}
     setSong={setSong}
     setDuration={setDuration}
     setIsPlaying={setIsPlaying}
+    song={song}
  />
               </div>
             </div>
@@ -106,7 +124,7 @@ export const Main = ({
   <RightSidebar loading={loading}/>
           </div>
         </main>
-        {player ? <Player 
+        {flagPlayer ? <Player 
         songerName={songerName}
         trackName={trackName}
         loading={loading} 
@@ -114,7 +132,6 @@ export const Main = ({
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         song={song}
-        allTracks={allTracks}
         setSong={setSong}
         setTrackName={setTrackName}
         setSongerName={setSongerName}
