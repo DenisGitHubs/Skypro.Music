@@ -11,19 +11,14 @@ import {ParentAuth} from "../authpage/ParentAuthPage";
 export const AppRoutes = ({
   bearer,
    onAuthButtonClick,
-    player,
-     setPlayer,
-      massiveData,
        songerName,
         trackName,
          setTrackName,
           setSongerName,
-          setAllTracks,
           isPlaying,
           setIsPlaying,
           song,
           setSong,
-          allTracks,
           duration,
           setDuration,
           changeDuration,
@@ -42,19 +37,14 @@ export const AppRoutes = ({
           <Route path="/category/:id" element={<Category />} />
           <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}
           setBearer={setBearer}
-            player={player}
-            setPlayer={setPlayer}
-            massiveData={massiveData}
             songerName={songerName}
             trackName={trackName}
             setTrackName={setTrackName}
             setSongerName={setSongerName}
-            setAllTracks={setAllTracks}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
             song={song}
             setSong={setSong}
-            allTracks={allTracks}
             duration={duration}
             setDuration={setDuration}
             changeDuration={changeDuration}
