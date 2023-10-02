@@ -42,25 +42,24 @@ const playerSlice = createSlice({
         dataSongs(state, action) {
             state.dataDefault = []
             state.dataDefault = action.payload.tracks
-            state.playListIsPlaying = action.payload.tracks;
-
+        },
+        activeNewPlaylist(state, action) {
+            state.playListIsPlaying = state.dataDefault;
         },
         shuffle(state, action) {
             if (state.isShuffle) {
                 state.isShuffle = false
                 state.playListIsPlaying = action.payload.dataDefault
-
             } else {
                 state.isShuffle = true;
                 state.playListIsPlaying = action.payload.newShuffle
-
-
             }
         }
     },
 });
 
 export const {togglePlayer} = playerSlice.actions
+export const {activeNewPlaylist} = playerSlice.actions
 export const {dataSongs} = playerSlice.actions
 export const {shuffle} = playerSlice.actions
 export default playerSlice.reducer

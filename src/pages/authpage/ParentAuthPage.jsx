@@ -5,7 +5,8 @@ import AuthPage from "./AuthPage";
 export const ActiveUserContext = createContext(null)
 
 
-export  const ParentAuth = (props, setIsAllowed, setBearer ) => {
+export  const ParentAuth = (props) => {
+
       // login/reg states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ return (
         repeatPassword,
         setRepeatPassword
         }} >
-    <AuthPage isloginmode={props.isloginmode} setIsAllowed={props.setIsAllowed} setBearer={props.setBearer}/>
+    <AuthPage isloginmode={props.isloginmode} setBearer={props.setBearer}/>
     </ActiveUserContext.Provider>
 )
 }

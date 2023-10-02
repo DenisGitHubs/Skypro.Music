@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 
     const navigate = useNavigate();
     const logout = () => {
+
       localStorage.removeItem('Active')
       navigate('/login')
       setBearer(null)

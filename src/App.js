@@ -18,7 +18,33 @@ function App() {
   const [duration, setDuration] = useState(null);
   const [changeDuration, setChangeDuration] = useState(0)
   const [bearer, setBearer] = useState(JSON.parse(localStorage.getItem('Active')))
-
+  const [loading, setLoading] = useState(false);
+  const [myFavorite, setMyFavorite] = useState(null)
+  const rest = {
+    myFavorite: myFavorite,
+    setMyFavorite: setMyFavorite,
+  loading: {loading},
+  setLoading: {setLoading},
+  setNewError: {setNewError},
+  setBearer: {setBearer},
+  bearer: {bearer},
+  songerName: {songerName},
+  trackName: {trackName},
+  setTrackName: {setTrackName},
+  setSongerName: {setSongerName},
+  setTimeToLoadData: {setTimeToLoadData},
+  timeToLoadData: {timeToLoadData},
+  isPlaying: {isPlaying},
+  setIsPlaying: {setIsPlaying},
+  song: {song},
+  setSong: {setSong},
+  duration: {duration},
+  setDuration: {setDuration},
+  changeDuration: {changeDuration},
+  setChangeDuration: {setChangeDuration},
+  setIsLoop: {setIsLoop},
+  isLoop: {isLoop}
+}
   return (
 
     <>
@@ -29,25 +55,7 @@ function App() {
     <title>Skypro</title>
     <div className="wrapper">
     <AppRoutes
-    setNewError={setNewError}
-    setBearer={setBearer}
-    bearer={bearer}
-    songerName={songerName}
-    trackName={trackName}
-    setTrackName={setTrackName}
-    setSongerName={setSongerName}
-    setTimeToLoadData={setTimeToLoadData}
-    timeToLoadData={timeToLoadData}
-    isPlaying={isPlaying}
-    setIsPlaying={setIsPlaying}
-    song={song}
-    setSong={setSong}
-    duration={duration}
-    setDuration={setDuration}
-    changeDuration={changeDuration}
-    setChangeDuration={setChangeDuration}
-    setIsLoop={setIsLoop}
-    isLoop={isLoop}
+    {...rest}
     />
     </div>
   </>
