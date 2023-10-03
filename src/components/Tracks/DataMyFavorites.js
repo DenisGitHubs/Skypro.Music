@@ -80,14 +80,12 @@ function TrackName(props) {
   const Isshuffle = useSelector(state => state.player.isShuffle)
 
 const data = props.data
-console.log(data);
+
 const load = props.loading;
 const dispatch = useDispatch()
 const toggleShuff = () => Isshuffle ? dispatch(shuffle(data)) : dispatch(activeNewPlaylist({data}))
 function HandleChoiceSong(props) {
-  console.log(props.track);
-  console.log(props.executor);
-  console.log(props.src);
+
   props.setTrackName(props.track);
   props.setSongerName(props.executor);
   props.setSong(props.src);
@@ -164,7 +162,6 @@ function TrackTime(props) {
           {id: props.id}
         ];
         await disData(access);
-
     }
     
     if(isError) {

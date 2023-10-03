@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-
+const DATA_TAG = { type: "Songs", id: "LIST" };
 
 export const queryApi = createApi({
     reducerPath: 'queryApi',
-    tagTypes: ['Likes'],
+
     baseQuery: fetchBaseQuery({baseUrl: 'https://skypro-music-api.skyeng.tech/catalog/'}),
     endpoints: (build) => ({
         getLikeSongs: build.query({
@@ -12,11 +12,9 @@ export const queryApi = createApi({
                 method: 'GET',
                 headers: Mass,
             }),
-            providesTags: (result) =>
-            result
-              ? [...result.map(({ id }) => ({ type: 'Likes', id })),
-              {type: 'Likes', id: 'LIST'},]
-              : [{type: 'Likes', id: 'LIST'}],
+            providesTags: (result = []) => [
+                DATA_TAG,
+              ],
         }),
         postLike: build.mutation({
             query: (access) => ({
@@ -25,7 +23,7 @@ export const queryApi = createApi({
                 method: 'POST',
                 headers: access[0],
             }),
-            invalidatesTags: [{ type: 'Likes', id: 'LIST'}]
+            invalidatesTags: [DATA_TAG]
         }),
         postDisLike: build.mutation({
             query: (access) => ({
@@ -34,7 +32,7 @@ export const queryApi = createApi({
                 method: 'DELETE',
                 headers: access[0],
             }),
-            invalidatesTags: [{type: 'Likes', id: 'list'}]
+            invalidatesTags: [DATA_TAG]
         })
     })
 })
