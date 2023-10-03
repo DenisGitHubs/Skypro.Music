@@ -1,13 +1,17 @@
 import { useEffect } from "react";
 import { DataMyFavorites } from "../components/Tracks/DataMyFavorites";
-import { useGetFavorSongsQuery, useGetLikeSongsMutation, useGetLikeSongsQuery } from "../QueryApi";
+import { useGetLikeSongsQuery } from "../QueryApi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { dataSongs } from "../store/player.slice";
+import { dataFavorite } from "../store/player.slice";
 export const Favorites = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+useEffect(() => {
+  props.setPage('favorites')
+}, [])
   useEffect(() => {
+
     props.setLoading.setLoading(true);
     const timer = setTimeout(() => {
       props.setLoading.setLoading(false);
@@ -32,9 +36,7 @@ if (isError) {
   navigate('/login')
   return
 }
-const tracks = data
-
-dispatch(dataSongs({tracks}))
+dispatch(dataFavorite({data}))
 
 
     const restToDataSong = {

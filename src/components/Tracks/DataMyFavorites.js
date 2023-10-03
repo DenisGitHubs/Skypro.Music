@@ -1,14 +1,17 @@
 
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
-import {activeNewPlaylist, togglePlayer, shuffle} from '../../store/player.slice'
+import {activeNewPlaylist, togglePlayer, shuffle, dataFavorite} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { usePostDisLikeMutation } from '../../QueryApi';
+
 export function DataMyFavorites(props) {
-  const dataDefault = useSelector(state => state.player.dataDefault)
+  const dataDefaultFavorites = useSelector(state => state.player.dataDefaultFavorites)
 
   return (
     <div>
-    {dataDefault.map((item) => (
+    {dataDefaultFavorites.map((item) => (
       <TrackExecutorAlbumTime 
       isPlaying={props.isPlaying}
       song={props.song}
@@ -55,7 +58,7 @@ function TrackExecutorAlbumTime(props) {
       </S.TrackTitle >
       <TrackExecutor executor={props.executor} loading={load}/>
       <TrackAlbum album={props.album} loading={load}/>
-      <TrackTime time={props.time} loading={load}/>
+      <TrackTime time={props.time} loading={load} id={props.id}/>
     </S.PlaylistTrack>
   </S.PlaylistItem>);
   }
@@ -74,10 +77,10 @@ const toggleTitle = !props.song ? bubbleNot : props.song === props.id ? props.is
 }
 function TrackName(props) {
   const Isshuffle = useSelector(state => state.player.isShuffle)
-  const dataDefault = useSelector(state => state.player.dataDefault)
+  const dataDefaultFavorites = useSelector(state => state.player.dataDefaultFavorites)
 const load = props.loading;
 const dispatch = useDispatch()
-const toggleShuff = () => Isshuffle ? dispatch(shuffle({dataDefault})) : dispatch(activeNewPlaylist())
+const toggleShuff = () => Isshuffle ? dispatch(shuffle({dataDefaultFavorites})) : dispatch(activeNewPlaylist())
 function HandleChoiceSong(props) {
   
   props.setTrackName(props.track);
@@ -140,6 +143,30 @@ function TrackAlbum(props) {
   )
 }
 function TrackTime(props) {
+  const likeIcon = <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+  <path d="M8.02203 12.7031C13.9025 9.20312 16.9678 3.91234 13.6132 1.47046C11.413 -0.13111 8.95392 1.14488 8.02203 1.95884H8.00052H8.00046H7.97895C7.04706 1.14488 4.58794 -0.13111 2.38775 1.47046C-0.966814 3.91234 2.09846 9.20312 7.97895 12.7031H8.00046H8.00052H8.02203Z" fill="#B672FF"/>
+  <path d="M8.00046 1.95884H8.02203C8.95392 1.14488 11.413 -0.13111 13.6132 1.47046C16.9678 3.91234 13.9025 9.20312 8.02203 12.7031H8.00046M8.00052 1.95884H7.97895C7.04706 1.14488 4.58794 -0.13111 2.38775 1.47046C-0.966814 3.91234 2.09846 9.20312 7.97895 12.7031H8.00052" stroke="#B672FF"/>
+  </svg>;
+    const [disData, {isError}] = usePostDisLikeMutation()
+    const navigate = useNavigate()
+
+
+    const handleDisLike = async () => {
+        const answer = JSON.parse(localStorage.getItem('Active')).Access
+        const access = [
+          {Authorization: `Bearer ${answer}`,
+          "content-type": "application/json",},
+          {id: props.id}
+        ];
+        await disData(access);
+
+    }
+    
+    if(isError) {
+      navigate('/login')
+      return
+    }
+
   const load = props.loading;
   const min = parseInt((props.time/60));
   const sec = time();
@@ -154,8 +181,8 @@ function TrackTime(props) {
 
     return (
     <div className="track__time">
-    <S.TrackTimeSvg alt="time">
-      <use xlinkHref="img/icon/sprite.svg#icon-like" />
+    <S.TrackTimeSvg alt="time" onClick={() => handleDisLike()}>
+    {likeIcon}
     </S.TrackTimeSvg>
     <S.TrackTimeText >{load ? "0:00" : `${min}:${sec}`}</S.TrackTimeText>
   </div>

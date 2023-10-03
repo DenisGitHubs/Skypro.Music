@@ -6,17 +6,18 @@ import { Category } from "../category";
 import { ProtectedRoute } from "../protect-road";
 import {ParentAuth} from "../authpage/ParentAuthPage";
 import { Layout } from "../../components/Layout/Layout";
+import { useState } from "react";
 
 
 
 export const AppRoutes = ({bearer, setBearer, myFavorite, setMyFavorite, ...childRest}) => {
-
+const [page, setPage] = useState('main')
   return (
     <>
     <Routes>
         <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
-        <Route path="/" element={<Layout {...childRest} setBearer={setBearer}/>}>
-          <Route path="favorites" element={<Favorites myFavorite={myFavorite} setMyFavorite={setMyFavorite} setBearer={setBearer} {...childRest}/>} />
+        <Route path="/" element={<Layout {...childRest} setBearer={setBearer} page={page}/>}>
+          <Route path="favorites" element={<Favorites myFavorite={myFavorite} setMyFavorite={setMyFavorite} setBearer={setBearer} {...childRest} setPage={setPage}/>} />
           <Route path="category/:id" element={<Category />} />
           <Route index element={<Main setBearer={setBearer} {...childRest}/>} />
           </Route>

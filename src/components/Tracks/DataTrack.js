@@ -4,7 +4,8 @@ import {SkeletonBlock} from 'skeleton-elements/react';
 import {activeNewPlaylist, shuffle, togglePlayer} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
 import { usePostDisLikeMutation, usePostLikeMutation } from '../../QueryApi';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 function TrackExecutorAlbumTime(props) {
   const load = props.loading
 
@@ -130,24 +131,34 @@ const likeIcon = <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="14"
 
   const dataDefault = useSelector(state => state.player.dataDefault)
 const [button, setButton] = useState(noLike)
-
-    const [data] = usePostLikeMutation()
+const [flag, setFlag] = useState(false)
+    const [data, {isError}] = usePostLikeMutation()
     const [disData] = usePostDisLikeMutation()
+    const navigate = useNavigate()
 
-const searchLike = () => {
-  if(dataDefault.length > 12) {
-    let email = JSON.parse(localStorage.getItem('Active')).Name
-    if(dataDefault.find(sSong => sSong.id === props.id).stared_user.find(e => e.username === email)
-    )
-  {
-    setButton(likeIcon)
-    return true}
-     else {
-      setButton(noLike)
-      return false
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    function searchLike () {
+      if(dataDefault.length > 12) {
+        let email = JSON.parse(localStorage.getItem('Active')).Name
+        if(dataDefault.find(sSong => sSong.id === props.id).stared_user.find(e => e.username === email)
+        ){
+          setFlag(true)
+          setButton(likeIcon)
+        return true};
+        if(!dataDefault.find(sSong => sSong.id === props.id).stared_user.find(e => e.username === email)
+        ){
+          setFlag(false)
+          setButton(noLike)
+          return false
+        }
+      }
     }
-  }
-}
+    searchLike()
+  }, 5000);
+  return () => clearTimeout(timer);
+}, []);
 const  handleLike = async () => {
   const answer = JSON.parse(localStorage.getItem('Active')).Access
   const access = [
@@ -156,6 +167,7 @@ const  handleLike = async () => {
     {id: props.id}
   ];
   setButton(likeIcon)
+  setFlag(true)
   await data(access);
 }
 const handleDisLike = async () => {
@@ -166,11 +178,24 @@ const handleDisLike = async () => {
       {id: props.id}
     ];
     setButton(noLike)
+    setFlag(false)
     await disData(access);
 }
 
+const toggleLike = async () => {
 
-
+  if (flag) {
+    console.log('Remove');
+    handleDisLike()
+  } if (!flag) { 
+    console.log("Add");
+    handleLike()
+  }
+}
+if(isError) {
+  navigate('/login')
+  return
+}
   const load = props.loading;
   const min = parseInt((props.time/60));
   const sec = time();
@@ -185,11 +210,10 @@ const handleDisLike = async () => {
 
     
     
-    // props.loading ? noLike : searchLike() ? likeIcon : noLike
     return (
     <div className="track__time">
-    <S.TrackTimeSvg  alt="time" onClick={load ? null : searchLike() ? handleDisLike  : handleLike }>
-    { button }
+    <S.TrackTimeSvg  alt="time" onClick={load ? null : toggleLike }>
+    {button}
     </S.TrackTimeSvg>
     <S.TrackTimeText >{load ? "0:00" : `${min}:${sec}`}</S.TrackTimeText>
   </div>

@@ -11,8 +11,12 @@ export const queryApi = createApi({
                 url: 'track/favorite/all/',
                 method: 'GET',
                 headers: Mass,
-            })
-
+            }),
+            providesTags: (result) =>
+            result
+              ? [...result.map(({ id }) => ({ type: 'Likes', id })),
+              {type: 'Likes', id: 'LIST'},]
+              : [{type: 'Likes', id: 'LIST'}],
         }),
         postLike: build.mutation({
             query: (access) => ({
@@ -21,7 +25,7 @@ export const queryApi = createApi({
                 method: 'POST',
                 headers: access[0],
             }),
-
+            invalidatesTags: [{ type: 'Likes', id: 'LIST'}]
         }),
         postDisLike: build.mutation({
             query: (access) => ({
@@ -35,14 +39,3 @@ export const queryApi = createApi({
     })
 })
 export const { useGetLikeSongsQuery, usePostLikeMutation, usePostDisLikeMutation } = queryApi;
-
-
-
-// getLikeSongs: build.mutation({
-//     query: (accessToken) => ({
-//         url: 'track/favorite/all/',
-//         method: 'GET',
-//         accessToken,
-
-//     })
-// }),
