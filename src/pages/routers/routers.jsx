@@ -12,10 +12,11 @@ import { useState } from "react";
 
 export const AppRoutes = ({bearer, setBearer, myFavorite, setMyFavorite, ...childRest}) => {
 const [page, setPage] = useState('main')
+
   return (
     <>
     <Routes>
-        <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
+        <Route element={<ProtectedRoute bearer={Boolean(bearer.bearer)} />}>
         <Route path="/" element={<Layout {...childRest} setBearer={setBearer} page={page} />}>
           <Route path="favorites" element={<Favorites myFavorite={myFavorite} setMyFavorite={setMyFavorite} setBearer={setBearer} {...childRest} setPage={setPage}/>} />
           <Route path="category/:id" element={<Category />} />
@@ -24,7 +25,7 @@ const [page, setPage] = useState('main')
         </Route>
         <Route
         path="/login"
-        element={<ParentAuth  isloginmode={true} setBearer={setBearer} ></ParentAuth>}
+        element={<ParentAuth  isloginmode={true} setBearer={setBearer.setBearer} ></ParentAuth>}
       ></Route>
 
       <Route

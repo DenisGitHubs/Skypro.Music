@@ -7,13 +7,18 @@ import  Player  from "../Player/Player.js"
 import RightSidebar from "../Sidebar/RightSideBar";
 
 const Layout = (props) => {
+  const navigate = useNavigate();
 
     const flagPlayer = useSelector(state => state.player.flagPlayer)
+
     const userName = JSON.parse(localStorage.getItem('Active')).Name
 
-    const navigate = useNavigate();
+
+
+
     const logout = () => {
       localStorage.removeItem('Active')
+
       navigate('/login')
       props.setBearer.setBearer(null)
 

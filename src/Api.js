@@ -34,6 +34,7 @@ export async function getAllTracks() {
 }
 
 export async function postNewUser({email, password, props}) {
+
    const response = await fetch("https://skypro-music-api.skyeng.tech/user/signup/", {
   method: "POST",
   body: JSON.stringify({
@@ -62,6 +63,7 @@ console.log(JSON.stringify(data));
   const activeUser = {
     Name: email,
   }
+  
   localStorage.setItem('Active', JSON.stringify(activeUser))
   LoginIn({email, password, props})
 }
@@ -124,8 +126,8 @@ if (response.ok) {
   localStorage.setItem('Active', JSON.stringify(activeUser))
 
 const answer = JSON.parse(localStorage.getItem('Active'))
+props.setBearer(answer)
 
-props.setBearer.setBearer(answer)
 
 return
 }

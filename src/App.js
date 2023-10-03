@@ -20,7 +20,9 @@ function App() {
   const [bearer, setBearer] = useState(JSON.parse(localStorage.getItem('Active')))
   const [loading, setLoading] = useState(false);
   const [myFavorite, setMyFavorite] = useState(null)
+  console.log(bearer);
   const rest = {
+
     myFavorite: myFavorite,
     setMyFavorite: setMyFavorite,
   loading: {loading},
