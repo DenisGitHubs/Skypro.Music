@@ -3,7 +3,7 @@ import DataSong from '../components/Tracks/DataTrack.js';
 import React, { useEffect } from "react";
 import { getAllTracks } from '../Api';
 import { useDispatch} from 'react-redux';
-import { dataSongs, activeNewPlaylist } from '../store/player.slice';
+import { dataSongs,} from '../store/player.slice';
 
 
 export const Main = ({ 
@@ -17,8 +17,9 @@ export const Main = ({
   song,
   loading,
   setLoading,
+  setPage,
  }) => {
-
+  setPage('main')
 
 const dispatch = useDispatch()
 

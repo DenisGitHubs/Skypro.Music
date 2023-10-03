@@ -16,10 +16,10 @@ const [page, setPage] = useState('main')
     <>
     <Routes>
         <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
-        <Route path="/" element={<Layout {...childRest} setBearer={setBearer} page={page}/>}>
+        <Route path="/" element={<Layout {...childRest} setBearer={setBearer} page={page} />}>
           <Route path="favorites" element={<Favorites myFavorite={myFavorite} setMyFavorite={setMyFavorite} setBearer={setBearer} {...childRest} setPage={setPage}/>} />
           <Route path="category/:id" element={<Category />} />
-          <Route index element={<Main setBearer={setBearer} {...childRest}/>} />
+          <Route index element={<Main setPage={setPage} setBearer={setBearer} {...childRest}/>} />
           </Route>
         </Route>
         <Route

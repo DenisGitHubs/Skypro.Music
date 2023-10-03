@@ -52,11 +52,11 @@ const toggleTitle = !props.song.song.song ? bubbleNot : props.song.song.song ===
 
 function TrackName(props) {
   const Isshuffle = useSelector(state => state.player.isShuffle)
-  const dataDefault = useSelector(state => state.player.dataDefault)
+  const data = useSelector(state => state.player.dataDefault)
 const load = props.loading;
 const dispatch = useDispatch()
 
-const toggleShuff = () => Isshuffle ? dispatch(shuffle({dataDefault})) : dispatch(activeNewPlaylist())
+const toggleShuff = () => Isshuffle ? dispatch(shuffle({data})) : dispatch(activeNewPlaylist())
 
 
 function HandleChoiceSong(props) {

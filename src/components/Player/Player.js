@@ -138,7 +138,8 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
 
     function shuffleTracks() {
       if (isShuffle) {
-        dispatch(shuffle({dataDefault}))
+        const data = dataDefault
+        dispatch(shuffle({data}))
       } else {
         const newList = []
         newList.push(dataDefault.map((item) => (
@@ -168,6 +169,7 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
           return arr;
         }
         let newShuffle = shuffleMass (newList[0]);
+        
         dispatch(shuffle({newShuffle}))
       }
     }

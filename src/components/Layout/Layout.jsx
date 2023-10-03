@@ -6,9 +6,7 @@ import { Filter } from "../SearchFilter/SearchFilter"
 import  Player  from "../Player/Player.js"
 import RightSidebar from "../Sidebar/RightSideBar";
 
-const Layout = (
-props
-    ) => {
+const Layout = (props) => {
 
     const flagPlayer = useSelector(state => state.player.flagPlayer)
     const userName = JSON.parse(localStorage.getItem('Active')).Name

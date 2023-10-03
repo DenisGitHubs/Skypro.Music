@@ -1,7 +1,7 @@
 
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
-import {activeNewPlaylist, togglePlayer, shuffle, dataFavorite} from '../../store/player.slice'
+import {activeNewPlaylist, togglePlayer, shuffle, activePlaylistFromMyTracks} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { usePostDisLikeMutation } from '../../QueryApi';
@@ -83,9 +83,9 @@ const data = props.data
 
 const load = props.loading;
 const dispatch = useDispatch()
-const toggleShuff = () => Isshuffle ? dispatch(shuffle(data)) : dispatch(activeNewPlaylist({data}))
+  
+const toggleShuff = () => Isshuffle ? dispatch(shuffle({data})) : dispatch(activePlaylistFromMyTracks({data}))
 function HandleChoiceSong(props) {
-
   props.setTrackName(props.track);
   props.setSongerName(props.executor);
   props.setSong(props.src);
@@ -93,7 +93,7 @@ function HandleChoiceSong(props) {
 }
 if (!load) {
   return (<div>
-    <S.TrackTitleLink onClick={() =>{HandleChoiceSong(props); dispatch(togglePlayer()); toggleShuff()}}>{props.track}
+    <S.TrackTitleLink onClick={() =>{HandleChoiceSong(props); dispatch(togglePlayer()); dispatch(activePlaylistFromMyTracks({data})); toggleShuff()}}>{props.track}
     <S.TrackTitleSpan>{props.secondname} </S.TrackTitleSpan>
     </S.TrackTitleLink>
   </div>

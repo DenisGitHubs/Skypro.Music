@@ -66,11 +66,12 @@ const playerSlice = createSlice({
         },
         activePlaylistFromMyTracks(state, action){
             state.playListIsPlaying = action.payload.data
+            state.dataDefault = action.payload.data
         },
         shuffle(state, action) {
             if (state.isShuffle) {
                 state.isShuffle = false
-                state.playListIsPlaying = action.payload.dataDefault
+                state.playListIsPlaying = action.payload.data
             } else {
                 state.isShuffle = true;
                 state.playListIsPlaying = action.payload.newShuffle
@@ -84,4 +85,5 @@ export const {activeNewPlaylist} = playerSlice.actions
 export const {dataSongs} = playerSlice.actions
 export const {shuffle} = playerSlice.actions
 export const {dataFavorite} = playerSlice.actions
+export const {activePlaylistFromMyTracks} = playerSlice.actions
 export default playerSlice.reducer
