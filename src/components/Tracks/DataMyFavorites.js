@@ -7,11 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { usePostDisLikeMutation } from '../../QueryApi';
 
 export function DataMyFavorites(props) {
-  const dataDefaultFavorites = useSelector(state => state.player.dataDefaultFavorites)
 
   return (
     <div>
-    {dataDefaultFavorites.map((item) => (
+    {props.data.data.map((item) => (
       <TrackExecutorAlbumTime 
       isPlaying={props.isPlaying}
       song={props.song}
@@ -28,6 +27,7 @@ export function DataMyFavorites(props) {
              setDuration={props.setDuration}
              setIsPlaying={props.setIsPlaying}
              key={item.id}
+             data={props.data.data}
              />
     ))}
     </div>
@@ -54,6 +54,7 @@ function TrackExecutorAlbumTime(props) {
           setDuration={props.setDuration}
           time={props.time}
           setIsPlaying={props.setIsPlaying}
+          data={props.data}
           />
       </S.TrackTitle >
       <TrackExecutor executor={props.executor} loading={load}/>
@@ -77,12 +78,16 @@ const toggleTitle = !props.song ? bubbleNot : props.song === props.id ? props.is
 }
 function TrackName(props) {
   const Isshuffle = useSelector(state => state.player.isShuffle)
-  const dataDefaultFavorites = useSelector(state => state.player.dataDefaultFavorites)
+
+const data = props.data
+console.log(data);
 const load = props.loading;
 const dispatch = useDispatch()
-const toggleShuff = () => Isshuffle ? dispatch(shuffle({dataDefaultFavorites})) : dispatch(activeNewPlaylist())
+const toggleShuff = () => Isshuffle ? dispatch(shuffle(data)) : dispatch(activeNewPlaylist({data}))
 function HandleChoiceSong(props) {
-  
+  console.log(props.track);
+  console.log(props.executor);
+  console.log(props.src);
   props.setTrackName(props.track);
   props.setSongerName(props.executor);
   props.setSong(props.src);

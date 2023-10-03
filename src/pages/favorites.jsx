@@ -40,6 +40,7 @@ dispatch(dataFavorite({data}))
 
 
     const restToDataSong = {
+      data: {data},
       isPlaying: props.isPlaying.isPlaying, 
       setTrackName: props.setTrackName.setTrackName,
       setSongerName: props.setSongerName.setSongerName,

@@ -93,6 +93,7 @@ function handleNext() {
 const handleLoop = () => {
 isLoop ? audioRef.current.loop = false : audioRef.current.loop = true;
 isLoop ? setIsLoop(false) : setIsLoop(true)}
+
   let srcSong = playListIsPlaying.find(sSong => sSong.id === song).track_file
 
   const togglePlay = isPlaying ? handleStop : handleStart;

@@ -64,6 +64,9 @@ const playerSlice = createSlice({
         activeNewPlaylist(state, action) {
             state.playListIsPlaying = state.dataDefault;
         },
+        activePlaylistFromMyTracks(state, action){
+            state.playListIsPlaying = action.payload.data
+        },
         shuffle(state, action) {
             if (state.isShuffle) {
                 state.isShuffle = false
