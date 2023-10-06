@@ -1,11 +1,12 @@
 
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
-import {togglePlayer} from '../../store/player.slice'
+import {activeNewPlaylist, shuffle, togglePlayer} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { usePostDisLikeMutation, usePostLikeMutation } from '../../QueryApi';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 function TrackExecutorAlbumTime(props) {
-
   const load = props.loading
 
     return (              <S.PlaylistItem>
@@ -28,42 +29,16 @@ function TrackExecutorAlbumTime(props) {
       </S.TrackTitle >
       <TrackExecutor executor={props.executor} loading={load}/>
       <TrackAlbum album={props.album} loading={load}/>
-      <TrackTime time={props.time} loading={load}/>
+      <TrackTime time={props.time} loading={load} id={props.id}/>
     </S.PlaylistTrack>
   </S.PlaylistItem>);
   }
 function TrackTitle(props) {
-  // const [songBubble, setSongBubble] = useState(props.song)
-  // const bubbleNot = 
-  // <>
-  // <S.TrackTitleSvg alt="music">
-  // <use xlinkHref="img/icon/sprite.svg#icon-note"> </use>
-  // </S.TrackTitleSvg>
-  // </>
-  // const bubbleActive = <S.BubbleSvg></S.BubbleSvg>
-  // const bubbleStop = <S.BubbleStop></S.BubbleStop>
+
   const bubbleNot= useSelector(state => state.player.bubbleNot)
   const bubbleActive = useSelector(state => state.player.bubbleActive)
   const bubbleStop = useSelector(state => state.player.bubbleStopActive)
-const toggleTitle = !props.song ? bubbleNot : props.song === props.id ? props.isPlaying ? bubbleActive : bubbleStop : bubbleNot
-// console.log(toggleTitle);
-  // const toggleTitle = () => {
-  //   if (songBubble) {
-  //     if (songBubble === props.id) {
-  //       if(props.isPlaying){
-  //         return bubbleActive
-  //       }
-  //       if(!props.isPlaying){
-  //         return bubbleStop
-  //       }
-
-
-  //     }
-  //   } else {
-  //     return bubbleNot
-  //   }
-  // }
-
+const toggleTitle = !props.song.song.song ? bubbleNot : props.song.song.song === props.id ? props.isPlaying.isPlaying.isPlaying ? bubbleActive : bubbleStop : bubbleNot
     return (
         <S.TrackTitleImg id={props.id} >
           {toggleTitle}
@@ -71,19 +46,31 @@ const toggleTitle = !props.song ? bubbleNot : props.song === props.id ? props.is
       </S.TrackTitleImg>
     )
 }
+
+
+
+
 function TrackName(props) {
+  const Isshuffle = useSelector(state => state.player.isShuffle)
+  const data = useSelector(state => state.player.dataDefault)
 const load = props.loading;
 const dispatch = useDispatch()
 
+const toggleShuff = () => Isshuffle ? dispatch(shuffle({data})) : dispatch(activeNewPlaylist())
+
+
 function HandleChoiceSong(props) {
-  props.setTrackName(props.track);
-  props.setSongerName(props.executor);
-  props.setSong(props.src);
-  props.setIsPlaying(true)
+  
+  props.setTrackName.setTrackName.setTrackName(props.track);
+  props.setSongerName.setSongerName.setSongerName(props.executor);
+  props.setSong.setSong.setSong(props.src);
+  props.setIsPlaying.setIsPlaying.setIsPlaying(true)
 }
+
+
 if (!load) {
   return (<div>
-    <S.TrackTitleLink onClick={() =>{HandleChoiceSong(props); dispatch(togglePlayer())}}>{props.track}
+    <S.TrackTitleLink onClick={() =>{HandleChoiceSong(props); dispatch(togglePlayer()); toggleShuff()}}>{props.track}
     <S.TrackTitleSpan>{props.secondname} </S.TrackTitleSpan>
     </S.TrackTitleLink>
   </div>
@@ -136,6 +123,79 @@ function TrackAlbum(props) {
   )
 }
 function TrackTime(props) {
+  const noLike = <use  xlinkHref="img/icon/sprite.svg#icon-like"/>
+const likeIcon = <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+<path d="M8.02203 12.7031C13.9025 9.20312 16.9678 3.91234 13.6132 1.47046C11.413 -0.13111 8.95392 1.14488 8.02203 1.95884H8.00052H8.00046H7.97895C7.04706 1.14488 4.58794 -0.13111 2.38775 1.47046C-0.966814 3.91234 2.09846 9.20312 7.97895 12.7031H8.00046H8.00052H8.02203Z" fill="#B672FF"/>
+<path d="M8.00046 1.95884H8.02203C8.95392 1.14488 11.413 -0.13111 13.6132 1.47046C16.9678 3.91234 13.9025 9.20312 8.02203 12.7031H8.00046M8.00052 1.95884H7.97895C7.04706 1.14488 4.58794 -0.13111 2.38775 1.47046C-0.966814 3.91234 2.09846 9.20312 7.97895 12.7031H8.00052" stroke="#B672FF"/>
+</svg>;
+
+  const dataDefault = useSelector(state => state.player.dataDefault)
+const [button, setButton] = useState(noLike)
+const [flag, setFlag] = useState(false)
+    const [data, {isError}] = usePostLikeMutation()
+    const [disData] = usePostDisLikeMutation()
+    const navigate = useNavigate()
+
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    function searchLike () {
+      if(dataDefault.length > 12) {
+        let email = JSON.parse(localStorage.getItem('Active')).Name
+        if(dataDefault.find(sSong => sSong.id === props.id).stared_user.find(e => e.username === email)
+        ){
+          setFlag(true)
+          setButton(likeIcon)
+        return true};
+        if(!dataDefault.find(sSong => sSong.id === props.id).stared_user.find(e => e.username === email)
+        ){
+          setFlag(false)
+          setButton(noLike)
+          return false
+        }
+      }
+    }
+    searchLike()
+  }, 5000);
+  return () => clearTimeout(timer);
+}, []);
+const  handleLike = async () => {
+  const answer = JSON.parse(localStorage.getItem('Active')).Access
+  const access = [
+    {Authorization: `Bearer ${answer}`,
+    "content-type": "application/json",},
+    {id: props.id}
+  ];
+  setButton(likeIcon)
+  setFlag(true)
+  await data(access);
+}
+const handleDisLike = async () => {
+    const answer = JSON.parse(localStorage.getItem('Active')).Access
+    const access = [
+      {Authorization: `Bearer ${answer}`,
+      "content-type": "application/json",},
+      {id: props.id}
+    ];
+    setButton(noLike)
+    setFlag(false)
+    await disData(access);
+}
+
+const toggleLike = async () => {
+
+  if (flag) {
+    console.log('Remove');
+    handleDisLike()
+  } if (!flag) { 
+    console.log("Add");
+    handleLike()
+  }
+}
+if(isError) {
+  navigate('/login')
+  return
+}
   const load = props.loading;
   const min = parseInt((props.time/60));
   const sec = time();
@@ -148,10 +208,12 @@ function TrackTime(props) {
     }
   }
 
+    
+    
     return (
     <div className="track__time">
-    <S.TrackTimeSvg alt="time">
-      <use xlinkHref="img/icon/sprite.svg#icon-like" />
+    <S.TrackTimeSvg  alt="time" onClick={load ? null : toggleLike }>
+    {button}
     </S.TrackTimeSvg>
     <S.TrackTimeText >{load ? "0:00" : `${min}:${sec}`}</S.TrackTimeText>
   </div>

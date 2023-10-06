@@ -16,17 +16,18 @@ export default function Player ({
   setSongerName,
   duration,
   setDuration,
-  changeDuration,
-  setChangeDuration,
   setIsLoop,
   isLoop
 
  }) 
   {
+
     const dataDefault = useSelector(state => state.player.dataDefault)
     const dispatch = useDispatch()
     const isShuffle = useSelector(state => state.player.isShuffle)
     const playListIsPlaying = useSelector(state => state.player.playListIsPlaying)
+    
+
 const audioRef = useRef(null);
 const ProgressRef = useRef(null);
 function changeNameInPlayer(newSong) {
@@ -37,12 +38,17 @@ function changeNameInPlayer(newSong) {
 }
 function progressBarTime () {
   setInterval(() => {
-    setCurrentTime(audioRef.current.currentTime)
+    if (audioRef.current !== null)
+    {
+      setCurrentTime(audioRef.current.currentTime)
+      return
+    }
+
+    return
   }, 10);
 }
 function handleBack () {
-  const songId = song;
-  let index = playListIsPlaying.findIndex(el => el.id === songId)
+  let index = playListIsPlaying.findIndex(el => el.id === song)
   index = index - 1
   const searchTrack = playListIsPlaying[index];
   if (!searchTrack) {
@@ -58,8 +64,8 @@ function handleBack () {
 
 }
 function handleNext() {
-  const songId = song;
-  let index = playListIsPlaying.findIndex(el => el.id === songId)
+
+  let index = playListIsPlaying.findIndex(el => el.id === song)
   index = index + 1
   const searchTrack = playListIsPlaying[index];
     if (!searchTrack) {
@@ -86,10 +92,10 @@ function handleNext() {
 
 const handleLoop = () => {
 isLoop ? audioRef.current.loop = false : audioRef.current.loop = true;
-isLoop ? setIsLoop(false) : setIsLoop(true)
-}
-  let search = song;
-  let srcSong = playListIsPlaying.find(sSong => sSong.id === search).track_file
+isLoop ? setIsLoop(false) : setIsLoop(true)}
+
+  let srcSong = playListIsPlaying.find(sSong => sSong.id === song).track_file
+
   const togglePlay = isPlaying ? handleStop : handleStart;
   const toggleShuffle = isShuffle ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 19 18" fill="none">
   <path d="M19 15L14 12.1132V17.8868L19 15ZM9.66317 12.0833L9.20863 12.2916L9.66317 12.0833ZM6.83683 5.91673L6.3823 6.12505L6.83683 5.91673ZM0 3.5H2.29151V2.5H0V3.5ZM6.3823 6.12505L9.20863 12.2916L10.1177 11.8749L7.29137 5.7084L6.3823 6.12505ZM14.2085 15.5H14.5V14.5H14.2085V15.5ZM9.20863 12.2916C10.1047 14.2466 12.0579 15.5 14.2085 15.5V14.5C12.449 14.5 10.8508 13.4745 10.1177 11.8749L9.20863 12.2916ZM2.29151 3.5C4.05105 3.5 5.64918 4.52552 6.3823 6.12505L7.29137 5.7084C6.39533 3.75341 4.44205 2.5 2.29151 2.5V3.5Z" fill="white"/>
@@ -113,6 +119,7 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
       setDuration(audioRef.current.duration)
       let totalSec = TotalTimeSec();
       let totalMin = parseInt((duration/60));
+
       setPlayerTime(`${totalMin}:${totalSec}`)
       audioRef.current.volume = volumeSong
     }
@@ -131,7 +138,8 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
 
     function shuffleTracks() {
       if (isShuffle) {
-        dispatch(shuffle({dataDefault}))
+        const data = dataDefault
+        dispatch(shuffle({data}))
       } else {
         const newList = []
         newList.push(dataDefault.map((item) => (
@@ -161,6 +169,7 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
           return arr;
         }
         let newShuffle = shuffleMass (newList[0]);
+        
         dispatch(shuffle({newShuffle}))
       }
     }
@@ -183,10 +192,19 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
         <S.TrackTimeText >{`${changeMin}:${changeSec} / ${playerTime}`}</S.TrackTimeText>
       )
     }
-//
+function CurrentTime(time) {
+  if (time) {
+    setCurrentTime(time)
+    return
+  } else {
+    return
+  }
+
+}
+
   return (
     <>
-    <audio onProgress={() => {LoadData(); setCurrentTime(audioRef.current.currentTime); progressBarTime()}} autoPlay ref={audioRef} src={srcSong}>
+    <audio onPlaying={() => {LoadData(); CurrentTime(audioRef.current.currentTime); progressBarTime()}} autoPlay ref={audioRef} src={srcSong}>
 
   </audio>
     <S.Bar>

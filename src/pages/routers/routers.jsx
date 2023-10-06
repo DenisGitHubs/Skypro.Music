@@ -5,61 +5,32 @@ import { Favorites } from "../favorites"
 import { Category } from "../category";
 import { ProtectedRoute } from "../protect-road";
 import {ParentAuth} from "../authpage/ParentAuthPage";
+import { Layout } from "../../components/Layout/Layout";
+import { useState } from "react";
 
 
 
-export const AppRoutes = ({
-  bearer,
-   onAuthButtonClick,
-       songerName,
-        trackName,
-         setTrackName,
-          setSongerName,
-          isPlaying,
-          setIsPlaying,
-          song,
-          setSong,
-          duration,
-          setDuration,
-          changeDuration,
-          setChangeDuration,
-          setIsLoop,
-          isLoop,
-          setBearer
-
-        }) => {
+export const AppRoutes = ({bearer, setBearer, myFavorite, setMyFavorite, ...childRest}) => {
+const [page, setPage] = useState('main')
 
   return (
     <>
     <Routes>
-        <Route element={<ProtectedRoute bearer={Boolean(bearer)} />}>
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/category/:id" element={<Category />} />
-          <Route path="/" element={<Main onAuthButtonClick={onAuthButtonClick}
-          setBearer={setBearer}
-            songerName={songerName}
-            trackName={trackName}
-            setTrackName={setTrackName}
-            setSongerName={setSongerName}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            song={song}
-            setSong={setSong}
-            duration={duration}
-            setDuration={setDuration}
-            changeDuration={changeDuration}
-            setChangeDuration={setChangeDuration}
-            setIsLoop={setIsLoop}
-            isLoop={isLoop} />} />
+        <Route element={<ProtectedRoute bearer={Boolean(bearer.bearer)} />}>
+        <Route path="/" element={<Layout {...childRest} setBearer={setBearer} page={page} />}>
+          <Route path="favorites" element={<Favorites myFavorite={myFavorite} setMyFavorite={setMyFavorite} setBearer={setBearer} {...childRest} setPage={setPage}/>} />
+          <Route path="category/:id" element={<Category />} />
+          <Route index element={<Main setPage={setPage} setBearer={setBearer} {...childRest}/>} />
+          </Route>
         </Route>
         <Route
         path="/login"
-        element={<ParentAuth  isloginmode={true} setBearer={setBearer} ></ParentAuth>}
+        element={<ParentAuth  isloginmode={true} setBearer={setBearer.setBearer} ></ParentAuth>}
       ></Route>
 
       <Route
         path="/register"
-        element={<ParentAuth  isloginmode={false} setBearer={setBearer}></ParentAuth>}
+        element={<ParentAuth  isloginmode={false} setBearer={setBearer.setBearer}></ParentAuth>}
       ></Route>
         <Route path="*" element={<NotFound />} />
 

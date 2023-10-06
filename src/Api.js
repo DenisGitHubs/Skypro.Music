@@ -1,5 +1,27 @@
 
 
+
+export async function getFavotitesTrack() {
+  const answer = JSON.parse(localStorage.getItem('Active')).Access
+  console.log(answer);
+  const response = await fetch("https://skypro-music-api.skyeng.tech/catalog/track/favorite/all/", {
+ method: "GET",
+ headers: {
+  Authorization: `Bearer ${answer}`,
+   "content-type": "application/json",
+ },
+})
+
+
+if (!response.ok) {
+
+console.log(JSON.stringify("Error"));
+} else {
+  const data = await response.json();
+  console.log(data);
+}
+}
+
 export async function getAllTracks() {
    const response = await fetch('https://skypro-music-api.skyeng.tech/catalog/track/all/', {
    });
@@ -12,6 +34,7 @@ export async function getAllTracks() {
 }
 
 export async function postNewUser({email, password, props}) {
+
    const response = await fetch("https://skypro-music-api.skyeng.tech/user/signup/", {
   method: "POST",
   body: JSON.stringify({
@@ -37,6 +60,11 @@ if (!response.ok) {
   
 console.log(JSON.stringify(data));
 } else {
+  const activeUser = {
+    Name: email,
+  }
+  
+  localStorage.setItem('Active', JSON.stringify(activeUser))
   LoginIn({email, password, props})
 }
 }
@@ -44,7 +72,6 @@ console.log(JSON.stringify(data));
 
 
 export async function LoginIn({email, password, props}) {
-
   const response = await fetch("https://skypro-music-api.skyeng.tech/user/login/", {
   method: "POST",
   body: JSON.stringify({
@@ -77,6 +104,7 @@ if(!response.ok){
 }
 
 async function GetToken({email, password, props}) {
+
   const response = await fetch("https://skypro-music-api.skyeng.tech/user/token/", {
   method: "POST",
   body: JSON.stringify({
@@ -99,6 +127,7 @@ if (response.ok) {
 
 const answer = JSON.parse(localStorage.getItem('Active'))
 props.setBearer(answer)
+
 
 return
 }

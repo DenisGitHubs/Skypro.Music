@@ -18,6 +18,8 @@ export default function AuthPage(props) {
 
 
   const handleLogin = async ({ email, password, props }) => {
+
+
     if(!password){
       localStorage.setItem('error', JSON.stringify('Пароли не совпадают'))
       setError('Введите пароль')
