@@ -1,10 +1,10 @@
 
 import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
-import {activeNewPlaylist, togglePlayer, shuffle, activePlaylistFromMyTracks} from '../../store/player.slice'
+import { togglePlayer, shuffle, activePlaylistFromMyTracks} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { usePostDisLikeMutation } from '../../QueryApi';
+import { usePostDisLikeMutation } from '../../Api/User.API';
 
 export function DataMyFavorites(props) {
 

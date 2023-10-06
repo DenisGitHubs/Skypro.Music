@@ -1,6 +1,6 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import playerReducer from './player.slice'
-import { queryApi } from "../QueryApi";
+import { queryApi } from "../Api/User.API";
 ///reducer maybe more
 export default configureStore({
     reducer:{
@@ -9,3 +9,4 @@ export default configureStore({
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(queryApi.middleware) 
 })
+ 

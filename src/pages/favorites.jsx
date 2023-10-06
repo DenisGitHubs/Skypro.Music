@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { DataMyFavorites } from "../components/Tracks/DataMyFavorites";
-import { useGetLikeSongsQuery } from "../QueryApi";
+import { useGetLikeSongsQuery } from "../Api/User.API";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { dataFavorite } from "../store/player.slice";

@@ -3,8 +3,8 @@ import * as S from './Track.styles'
 import {SkeletonBlock} from 'skeleton-elements/react';
 import {activeNewPlaylist, shuffle, togglePlayer} from '../../store/player.slice'
 import { useDispatch, useSelector } from 'react-redux';
-import { usePostDisLikeMutation, usePostLikeMutation } from '../../QueryApi';
-import { useEffect, useRef, useState } from 'react';
+import { usePostDisLikeMutation, usePostLikeMutation } from '../../Api/User.API';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 function TrackExecutorAlbumTime(props) {
   const load = props.loading
@@ -17,7 +17,7 @@ function TrackExecutorAlbumTime(props) {
         track={props.track}
         secondname={props.secondname}
           loading={load}
-          setTrackName={props.setTrackName}
+          // setTrackName={props.setTrackName}
           setSongerName={props.setSongerName}
           executor={props.executor}
           setSong={props.setSong}
@@ -61,7 +61,7 @@ const toggleShuff = () => Isshuffle ? dispatch(shuffle({data})) : dispatch(activ
 
 function HandleChoiceSong(props) {
   
-  props.setTrackName.setTrackName.setTrackName(props.track);
+  // props.setTrackName.setTrackName.setTrackName(props.track);
   props.setSongerName.setSongerName.setSongerName(props.executor);
   props.setSong.setSong.setSong(props.src);
   props.setIsPlaying.setIsPlaying.setIsPlaying(true)

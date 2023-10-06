@@ -3,7 +3,7 @@ import * as S from "./AuthPage.styles";
 import { useEffect, useState } from "react";
 import { ActiveUserContext } from "./ParentAuthPage";
 import { useContext } from "react";
-import { LoginIn, postNewUser } from "../../Api";
+import { LoginIn, postNewUser } from "../../Api/Tracks.API";
 
 export default function AuthPage(props) {
   const {email} = useContext(ActiveUserContext)

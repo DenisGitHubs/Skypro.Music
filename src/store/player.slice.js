@@ -47,9 +47,15 @@ const playerSlice = createSlice({
         bubbleActive: 
         // eslint-disable-next-line react/jsx-no-undef
         <S.BubbleSvg></S.BubbleSvg>
-        
+        ,
+        trackName: ''
     },
     reducers: {
+        trackName(state, action){
+
+        },
+
+        //все что ниже осмотреть и оптимизировать
         togglePlayer(state, action) {
             state.flagPlayer = true
         },
@@ -76,7 +82,9 @@ const playerSlice = createSlice({
                 state.isShuffle = true;
                 state.playListIsPlaying = action.payload.newShuffle
             }
-        }
+        },
+        
+
     },
 });
 

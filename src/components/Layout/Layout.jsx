@@ -13,9 +13,6 @@ const Layout = (props) => {
 
     const userName = JSON.parse(localStorage.getItem('Active')).Name
 
-
-
-
     const logout = () => {
       localStorage.removeItem('Active')
 
@@ -27,7 +24,7 @@ const Layout = (props) => {
 
     const restToPlayer = {
         isPlaying: props.isPlaying.isPlaying, 
-        setTrackName: props.setTrackName.setTrackName,
+        // setTrackName: props.setTrackName.setTrackName,
         setSongerName: props.setSongerName.setSongerName,
         setSong: props.setSong.setSong,
         setDuration: props.setDuration.setDuration,
@@ -37,7 +34,7 @@ const Layout = (props) => {
         isLoop: props.isLoop.isLoop,
         duration: props.duration.duration,
         songerName: props.songerName.songerName,
-        trackName: props.trackName.trackName,
+        // trackName: props.trackName.trackName,
         setIsLoop:props.setIsLoop.setIsLoop
       }
     return (

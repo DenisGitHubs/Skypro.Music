@@ -1,7 +1,7 @@
 import '../App.css';
 import DataSong from '../components/Tracks/DataTrack.js';
 import React, { useEffect } from "react";
-import { getAllTracks } from '../Api';
+import { getAllTracks } from '../Api/Tracks.API';
 import { useDispatch} from 'react-redux';
 import { dataSongs,} from '../store/player.slice';
 

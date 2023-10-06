@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 function App() {
 
-  const [trackName, setTrackName] = useState('');
+  // const [trackName, setTrackName] = useState('');
   const [songerName, setSongerName] = useState('');
   const [timeToLoadData, setTimeToLoadData] = useState(false);
   const [newError, setNewError] = useState(null);
@@ -20,7 +20,7 @@ function App() {
   const [bearer, setBearer] = useState(JSON.parse(localStorage.getItem('Active')))
   const [loading, setLoading] = useState(false);
   const [myFavorite, setMyFavorite] = useState(null)
-  console.log(bearer);
+
   const rest = {
 
     myFavorite: myFavorite,
@@ -31,8 +31,8 @@ function App() {
   setBearer: {setBearer},
   bearer: {bearer},
   songerName: {songerName},
-  trackName: {trackName},
-  setTrackName: {setTrackName},
+  // trackName: {trackName},
+  // setTrackName: {setTrackName},
   setSongerName: {setSongerName},
   setTimeToLoadData: {setTimeToLoadData},
   timeToLoadData: {timeToLoadData},
