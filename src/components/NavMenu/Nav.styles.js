@@ -22,11 +22,11 @@ export const MenuLink = styled.a`
 `;
 
 export const MainNav = styled.nav`
-  width: 244px;
+
   background-color: #181818;
   padding: 20px 0 20px 36px;
 `;
-
+  // width: 244px;
 export const NavLogo = styled.div`
   width: 113.33px;
   height: 43px;

@@ -1,17 +1,12 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import AuthPage from "./AuthPage";
 
 
 export const ActiveUserContext = createContext(null)
-
-
-export  const ParentAuth = (props) => {
-
-      // login/reg states
+export  const ParentAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-
 return (
         <ActiveUserContext.Provider value={{
         email,
@@ -21,7 +16,7 @@ return (
         repeatPassword,
         setRepeatPassword
         }} >
-    <AuthPage isloginmode={props.isloginmode} setBearer={props.setBearer}/>
+    <AuthPage />
     </ActiveUserContext.Provider>
 )
 }
