@@ -1,10 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../../App.css';
 import * as S from './Player.styles'
 import { useDispatch, useSelector } from 'react-redux';
-import { setSongIsPlaying, shuffle, togglePlayer, toggleShaffle } from '../../store/player.slice';
-export default function Player () 
-  {
+import { changeUser, createCopyData, mainListFromApi, setSongIsPlaying, shuffle, togglePlayer, toggleShaffle } from '../../store/player.slice';
+import { useGetAllSongsQuery, usePostDisLikeMutation, usePostLikeMutation } from '../../API/tracks.api';
+import { GetNewTokens } from '../../API/user.api';
+import { useNavigate } from 'react-router-dom';
+export default function Player () {
+  const [likeData, {error: createError, isError: createNewError,}] = usePostLikeMutation()
+  const [disData, {error, isError}] = usePostDisLikeMutation()  
+    const navigate = useNavigate()
     const loadingFromApi = useSelector(state => state.player.loadingFromApi)
     const playMusic = useSelector(state => state.player.playMusic)
     const songIsPlaying = useSelector(state => state.player.songIsPlaying)
@@ -19,8 +24,6 @@ export default function Player ()
     const [playerTime, setPlayerTime] = useState(0)
     const [volumeSong, setVolumeSong] = useState(0.5)
     const [duratin, setDuration] = useState(null)
-
-
 function progressBarTime () {
   setInterval(() => {
     if (audioRef.current !== null)
@@ -103,8 +106,6 @@ const toggleLoop = isLoop ? <svg xmlns="http://www.w3.org/2000/svg" width="16" h
       let totalMin = parseInt((audioRef.current.duration / 60));
       setPlayerTime(`${totalMin}:${totalSec}`)
       audioRef.current.volume = volumeSong 
-
-
     }
 
 
@@ -181,7 +182,26 @@ function CurrentTime(time) {
   } else {
     return
   }
+}
 
+const  handleLike = async () => {
+  const answer = JSON.parse(localStorage.getItem('Access'))
+  const access = [
+    {Authorization: `Bearer ${answer}`,
+    "content-type": "application/json",},
+    {id: songIsPlaying.id}
+  ];
+  await likeData(access);
+}
+
+const handleDisLike = async () => {
+    const answer = JSON.parse(localStorage.getItem('Access'))
+    const access = [
+      {Authorization: `Bearer ${answer}`,
+      "content-type": "application/json",},
+      {id: songIsPlaying.id}
+    ];
+    await disData(access)
 }
 
   return (
@@ -249,12 +269,12 @@ function CurrentTime(time) {
               </S.TrackPlayAlbum>
             </S.TrackPlayContain>
             <S.TrackPlayLikeDis>
-              <div className="track-play__like _btn-icon">
-                <svg className="track-play__like-svg" alt="like">
+              <div className="track-play__like _btn-icon" >
+                <svg className="track-play__like-svg" alt="like" onClick={() => handleLike()}>
                   <use xlinkHref="img/icon/sprite.svg#icon-like" />
                 </svg>
               </div>
-              <div className="track-play__dislike _btn-icon">
+              <div className="track-play__dislike _btn-icon" onClick={() => handleDisLike()}>
                 <svg className="track-play__dislike-svg" alt="dislike">
                   <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
                 </svg>

@@ -13,8 +13,8 @@ export const AppRoutes = () => {
     <Routes>
         <Route element={<ProtectedRoute  />}>
         <Route path="/" element={<Layout />}>
-          <Route path="favorites" element={<Favorites />} />
-          <Route path=":id" element={<Category />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/:id" element={<Category />} />
           <Route index element={<Main />} />
           </Route>
         </Route>

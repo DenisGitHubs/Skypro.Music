@@ -3,39 +3,18 @@ import { Nav } from "../NavMenu/Nav"
 import 'skeleton-elements/css';
 import { useDispatch, useSelector } from "react-redux";
 import { Filter } from "../SearchFilter/SearchFilter"
-import { comeBackData, copyCurrentData, createFilterOther, deleteUser } from "../../store/player.slice";
+import { deleteUser } from "../../store/player.slice";
 import  Player  from "../Player/Player.js"
 import RightSidebar from "../Sidebar/RightSideBar";
-import { useEffect, useState } from "react";
+import { SearchSys } from "../SearchFilter/components/Search";
 
 const Layout = () => {
-  const dataDefault = useSelector(state => state.player.dataDefault)
-  const copyData = useSelector(state => state.player.copyData)
-  const [find, setFind] = useState('')
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const flagPlayer = useSelector(state => state.player.flagPlayer)
   const pageName = useSelector(state => state.player.pageName)
   const userName = JSON.parse(localStorage.getItem('userName'))
-  const copyNowData = useSelector(state => state.player.copyNowData)
-  const load = useSelector(state => state.player.loadingFromApi)
-  useEffect(() => {
-    dispatch(copyCurrentData({dataDefault}))
-    setFind('')
-  }, [pageName, load])
 
-  useEffect(() => {
-    if (find.length > 0){
-    const toLowerConst = find.toLowerCase()
-    let pattern = new RegExp(toLowerConst)
-    const dataFilter = dataDefault.filter(e => pattern.test(e.name.toLowerCase()))
-      dispatch(createFilterOther({dataFilter}))
-  }
-  if (find.length === 0){
-      const dataFilter = copyNowData
-      dispatch(createFilterOther({dataFilter}))
-  }
-  }, [find])
   const logout = () => {
     localStorage.removeItem('userName')
     navigate('/login')
@@ -56,19 +35,7 @@ const togglePageName = () => {
 <main className="main">
 <Nav />
 <div className="main__centerblock centerblock">
-            <div className="centerblock__search search">
-              <svg className="search__svg">
-                <use xlinkHref="/img/icon/sprite.svg#icon-search" />
-              </svg>
-              <input
-                className="search__text"
-                type="search"
-                placeholder="Поиск"
-                name="search"
-                value={find}
-                onChange={(event) => {setFind(event.target.value)}}
-              />
-            </div>
+            <SearchSys />
             <h2 className="centerblock__h2">{togglePageName()}</h2>
 {pageName === 'main' ? <Filter /> : null}
             <div className="centerblock__content">
@@ -100,8 +67,6 @@ const togglePageName = () => {
           </div>
 
 </main>
-
-
 {flagPlayer ? <Player id='player'/> : null}
 <footer className="footer" />
 </div>

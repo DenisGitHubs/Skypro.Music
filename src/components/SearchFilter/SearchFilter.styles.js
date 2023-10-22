@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-
+import propTypes from 'prop-types'
 export const CenterblockFilter = styled.div`
 display: -webkit-box;
 display: -ms-flexbox;
@@ -21,6 +21,7 @@ line-height: 24px;
 margin-right: 15px;`
 
 export const Show = styled.div`
+display: ${props => props.show ? 'block' : 'none'};
 position: absolute;
 padding: 34px;
 border-radius: 12px;
@@ -32,7 +33,7 @@ z-index: 100;`
 export const NotShow = styled.div`
 display: none;`
 
-export const ShowLink = styled.div`
+export const ShowLink = styled.div` 
 display:flex;
 flex-direction: column;
 gap: 28px;
@@ -47,11 +48,10 @@ font-family: StratosSkyeng;
     width: 4px;
     background-color: #4B4949;
   }
-
     `
 
 export const FilterLink = styled.a`
-color: ${props => props.isSelected ? 'red' : 'yellow'};
+color: ${props => props.isSelected ? '#B672FF' : '#FFF'};
 font-variant-numeric: lining-nums proportional-nums;
 font-family: StratosSkyeng;
 font-size: 20px;
@@ -62,10 +62,26 @@ line-height: 24px;
     color: #B672FF;
     text-decoration-line: underline;
   }
-&:active:not(:disabled) {
-    color: red
-    }
-&:disabled {
-      color: white;
-    }`
-    // color: #FFF;
+`
+export const FilterBox = styled.div`
+position: relative;
+`
+export const CounterImg = styled.div`
+display: ${props => props.flag ? 'block' : 'none'};
+position: absolute;
+background: #B672FF;
+background-repeat: no-repeat;
+border-radius: 100%;
+right: 0;
+top: -10px;
+width: 26px;
+height: 25.5px;
+text-align: center
+`
+
+export const CounterText = styled.p`
+position: relative;
+top: 15%;
+text-align: 50%;
+font-size: 0.8em;
+`
