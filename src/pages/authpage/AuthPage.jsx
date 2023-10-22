@@ -3,9 +3,13 @@ import * as S from "./AuthPage.styles";
 import { useEffect, useState } from "react";
 import { ActiveUserContext } from "./ParentAuthPage";
 import { useContext } from "react";
-import { LoginIn, postNewUser } from "../../Api";
+import { LoginIn, postNewUser } from "../../API/user.api";
+import { useDispatch } from "react-redux";
+import { changeUser } from "../../store/player.slice";
 
-export default function AuthPage(props) {
+export default function AuthPage() {
+
+  const dispatch = useDispatch()
   const {email} = useContext(ActiveUserContext)
   const {setEmail} = useContext(ActiveUserContext)
   const {password} = useContext(ActiveUserContext)
@@ -14,70 +18,70 @@ export default function AuthPage(props) {
   const {setRepeatPassword} = useContext(ActiveUserContext)
   const [error, setError] = useState(null);
   const [disable, setDisable] = useState(false)
+  const [isLoginMode, setIsLoginMode] = useState(true)
+
   const navigate = useNavigate()
 
-
-  const handleLogin = async ({ email, password, props }) => {
-
-
+  const handleLogin = async () => {
     if(!password){
-      localStorage.setItem('error', JSON.stringify('Пароли не совпадают'))
       setError('Введите пароль')
-      localStorage.removeItem('error')
+      console.log(password);
       return
     }
     if(!email){
-      localStorage.setItem('error', JSON.stringify('Пароли не совпадают'))
       setError('Введите почту')
-      localStorage.removeItem('error')
       return
     }
- await LoginIn({email, password, props})
- let Regerror = JSON.parse(localStorage.getItem('error'))
-
-  if(Regerror){
-    setError(Regerror)
+    setDisable(true)
+ const user = await LoginIn(email, password)
+ let regError = JSON.parse(localStorage.getItem('error'))
+  if(regError){
+    setDisable(false)
+    setError(regError)
     localStorage.removeItem('error')
     return
   }
-
+  dispatch(changeUser({user}))
  navigate("/")
   };
 
-  const handleRegister = async ({props}) => {
 
+  const handleRegister = async () => {
     if (!email || !password || !repeatPassword) {
-      localStorage.setItem('error', JSON.stringify('Пароли не совпадают'))
       setError("Эти поля не могут быть пустыми.")
-      localStorage.removeItem('error')
       return
     }
 if (password === repeatPassword) {
   setDisable(true)
- await postNewUser({email, password, props})
-  let Regerror = JSON.parse(localStorage.getItem('error'))
-  if(Regerror){
-    setError(Regerror)
+ const user = await postNewUser(email, password)
+  let regError = JSON.parse(localStorage.getItem('error'))
+  if(regError){
+    setDisable(false)
+    setError(regError)
     localStorage.removeItem('error')
     return
   }
-  console.log("object");
+  dispatch(changeUser({user}))
   navigate("/")
 }
 if (password !== repeatPassword) {
-  localStorage.setItem('error', JSON.stringify('Пароли не совпадают'))
   setError('Пароли не совпадают')
-  localStorage.removeItem('error')
   return
 }
-
   };
-
+  const regOrLoginPage = () => {
+    if (isLoginMode) {
+      setIsLoginMode(false)
+      return
+    }
+    if (!isLoginMode) {
+      setIsLoginMode(true)
+    }
+  }
   // Сбрасываем ошибку если пользователь меняет данные на форме или меняется режим формы
   useEffect(() => {
     setError(null);
-
-  }, [props.isloginmode, email, password, repeatPassword]);
+  }, [isLoginMode, email, password, repeatPassword]);
 
   return (
     <S.PageContainer>
@@ -87,7 +91,7 @@ if (password !== repeatPassword) {
             <S.ModalLogoImage src="/img/logo_modal.png" alt="logo" />
           </S.ModalLogo>
         </Link>
-        {props.isloginmode ? (
+        {isLoginMode ? (
           <>
             <S.Inputs>
               <S.ModalInput
@@ -114,13 +118,10 @@ if (password !== repeatPassword) {
             {error && <S.Error>{error}</S.Error>}
             <S.Buttons>
 
-              <S.PrimaryButton onClick={() => handleLogin({ email, password, props })}>
+              <S.PrimaryButton disabled={disable} onClick={() => handleLogin()}>
                 Войти
               </S.PrimaryButton>
-
-              <Link to="/register" >
-                <S.SecondaryButton disabled={disable}>Зарегистрироваться</S.SecondaryButton>
-              </Link>
+                <S.SecondaryButton  onClick={() => regOrLoginPage()}>Зарегистрироваться</S.SecondaryButton>
             </S.Buttons>
           </>
         ) : (
@@ -155,10 +156,13 @@ if (password !== repeatPassword) {
               />
             </S.Inputs>
             {error && <S.Error>{error}</S.Error>}
+
             <S.Buttons>
-              <S.PrimaryButton onClick={() => handleRegister({ props })}>
+
+              <S.PrimaryButton disabled={disable} onClick={() => handleRegister()}>
                 Зарегистрироваться
               </S.PrimaryButton>
+                <S.SecondaryButton onClick={() => regOrLoginPage()}>Войти</S.SecondaryButton>
             </S.Buttons>
           </>
         )}

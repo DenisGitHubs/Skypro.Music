@@ -1,0 +1,60 @@
+убрать все логи.
+дописать ошибки на все вызовы
+Перенести стили в styled
+проверить что выход удаляет все из local
+прописать везде где получаем данные, ошибки
+переписать проверку на первое добавление песен по автору
+очистка списка песен по автору после перехода на другие страницы
+отключить переходы по навигации до конца загрузки
+searchFilter 70 разоьраться с доьавлением данных
+
+
+
+const newShuffledArray = state.playlist.map((track) => track);
+
+
+Марина 11:20 PM
+И уже newShuffledArray можешь записывать в новое состояние state.massive
+
+
+  кому  Все
+const date = new Date(your_date)
+date.getTime() // кол-во миллисекунд
+19_02_2000
+
+Skypro Live  кому  Все 12:23 AM
+split()
+
+Павел 12:24 AM
+arr3.sort(
+        (a, b) => parseFloat(a.release_date) - parseFloat(b.release_date),
+      )
+
+            class Singer extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {isSelected: false}
+                }
+                
+                toggleIsActive = () => {this.setState({isSelected: !this.state.isSelected})};
+                  render(){
+                    console.log(this.state);
+            return dataSingers.map(name => <S.FilterLink isSelected={this.isSelected} key={newKey()} onClick={() =>{this.setState({isSelected: !this.state.isSelected}); toggleFlag(name)}}> {name} </S.FilterLink>)
+        }
+        }
+
+Во время общения на встрече 13 числа, я обещал, что выложу код-сотрировки сделанную руками. Сам код я немного разбил на части чтобы было проще пояснять:
+const arr = data.filter(el => el.release_date != null)
+в это строке мы создаем новый массив из старого, что бы убрать 1 песню, у которой нет даты.
+const arr2 = arr.map(e => e.release.date)
+создаем массив из дат
+const pattern = '-'
+const arr3 = arr2.map(e => (e.split(pattern))).map(item => item.map(el => Number(el)))
+здесь мы проходимся по массиву arr2, сначала разбиваем на три строки одну строку с датой, т.е, примеру "2005-12-21" => "2005", "12", "21". затем превращаем в полученном массиве с массивами строки в цифры.
+const arr4 = arr3.map((e) => ({date: new Date(e[0], e[1], e[2]).getTime()}))
+здесь, передав полученные цифры, как год, месяц и день, мы получаем сколько прошло милисекунд с 1января 1970г. 
+const arr5 = arr.map((item, index) => ({...item, ...arr4[index]}))
+здесь мы "склеиваем", полученный ранее массив без 1 песни и время в милисекундах с ключом, по-индексно.
+const arr6 = arr5.sort((a, b) => parseFloat(a.date) - parseFloat(b.date))
+Здесь, получаем отсортированный массив по дате. В сторону от старых к новым.
+Сам код можно подсократить, но для декларативности выкладываю так. Надеюсь кому-нибудь пригодится. Надеюсь критика будет конструктивной. Всем удачи в курсовой!!!

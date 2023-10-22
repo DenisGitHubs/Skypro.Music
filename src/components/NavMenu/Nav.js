@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from 'react';
 import * as S from './Nav.styles'
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUser, setPageName } from "../../store/player.slice";
 
   function NavHtml(props) {
     return (
@@ -13,17 +15,20 @@ import { useNavigate } from "react-router-dom";
     );
   }
 
-  export const Nav = ({ setBearer }) => {
+  export const Nav = () => {
+const dispatch = useDispatch();
+const navigate = useNavigate();
+const [visible, setVisible] = useState(false);
+const toggleVisibility = () => setVisible(!visible);
+const namePage = 'favorites'
 
-    const navigate = useNavigate();
     const logout = () => {
-      localStorage.removeItem('Active')
+      localStorage.removeItem('userName')
       navigate('/login')
-      setBearer(null)
+      dispatch(deleteUser())
+    };
 
-    }
-    const [visible, setVisible] = useState(false);
-    const toggleVisibility = () => setVisible(!visible);
+
     return (
       <S.MainNav>
       <S.NavLogo>
@@ -38,7 +43,7 @@ import { useNavigate } from "react-router-dom";
         <S.NavMenu>
         <S.MenuList>
                 <NavHtml text="Главное" to="/"/>
-                <NavHtml text="Мой плейлист" to="/favorites"/>
+                <NavHtml text="Мой плейлист" to="/favorites" onClick={() => dispatch(setPageName({namePage}))}/>
                 <NavHtml text="Выйти" to="/login" logout={logout}/>
                 </S.MenuList>
                 </S.NavMenu>

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { useSelector } from 'react-redux';
 import * as S from './Sidebar.styles';
 
 
@@ -19,16 +20,16 @@ export const Playlists = [
   srcAlt: "img/playlistUnknown.png"
   }
 ]
-  export default function RightSidebar({ loading }) {
-    const load = loading;
+  export default function RightSidebar() {
+    const loadingFromApi = useSelector(state => state.player.loadingFromApi)
     return (
       <S.SidebarBlock>
         <S.SidebarList>
         {Playlists.map(playlist => (
       <S.SidebarItem key={playlist.id}>
-      <S.NewSidebarLink to={`/category/${playlist.id}`}>
+      <S.NewSidebarLink to={`${playlist.id}`}>
         <S.SidebarImg
-          src={load ? playlist.srcAlt : playlist.src}
+          src={loadingFromApi ? playlist.srcAlt : playlist.src}
           alt="playlist"
         />
       </S.NewSidebarLink>

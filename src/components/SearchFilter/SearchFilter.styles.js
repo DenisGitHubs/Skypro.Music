@@ -46,10 +46,12 @@ font-family: StratosSkyeng;
 &::-webkit-scrollbar {
     width: 4px;
     background-color: #4B4949;
-  }`
+  }
+
+    `
 
 export const FilterLink = styled.a`
-color: #FFF;
+color: ${props => props.isSelected ? 'red' : 'yellow'};
 font-variant-numeric: lining-nums proportional-nums;
 font-family: StratosSkyeng;
 font-size: 20px;
@@ -59,4 +61,11 @@ line-height: 24px;
 &:hover {
     color: #B672FF;
     text-decoration-line: underline;
-  }`
+  }
+&:active:not(:disabled) {
+    color: red
+    }
+&:disabled {
+      color: white;
+    }`
+    // color: #FFF;

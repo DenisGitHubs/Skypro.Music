@@ -1,17 +1,16 @@
-
-import React, { useEffect, useState, Component } from 'react'
+import { useEffect, useState } from 'react'
 import * as S from './SearchFilter.styles.js'
 import { useDispatch, useSelector } from 'react-redux';
-import { copyCurrentData, createFilterData, createFilterOther, createfilterData } from '../../store/player.slice.js';
+import { copyCurrentData, createFilterData, createFilterOther } from '../../store/player.slice.js';
 const dataYears = ['По умолчанию', 'Сначала новые', 'Сначала старые']
 let dataSingers = []
 let Newdata = []
 let dateSong = []
+let dataFromOldToNew = []
 let uniqueGenres = []
 let dataFilter = []
 export function Filter() {
     let idKey = 0;
-    const [checkFilter, setCheckFilter] = useState(null)
     const [show, setShowSinger] = useState(false);
     const [showYear, setShowYear] = useState(false);
     const [showGenre, setShowGenre] = useState(false)
@@ -19,7 +18,6 @@ export function Filter() {
     const dataDefault = useSelector(state => state.player.dataDefault)
     const copyData = useSelector(state => state.player.copyData)
     const load = useSelector(state => state.player.loadingFromApi)
-    const filterData = useSelector(state => state.player.filterData)
     const dispatch = useDispatch()
     
     useEffect(() => {
@@ -50,19 +48,14 @@ export function Filter() {
         return
     } else {
         const pattern = '-'
-        const arr = filterData.filter(element => element.release_date != null)
+        const arr = copyData.filter(element => element.release_date != null)
         const arr2 = arr.map(item => item.release_date)
         const arr3 = arr2.map(e => (e.split(pattern))).map(item => item.map(el => Number(el)))
         const arr4 = arr3.map((e) => ({date: new Date(e[0], e[1], e[2]).getTime()}))
-        const arr5 = arr.map((item, index) => ({...item, ...arr4[index]}))
+        const arr5 = arr.map((item, index) => ({...item, ...arr4[index]})) 
         return arr5.sort((a, b) => parseFloat(a.date) - parseFloat(b.date),)
     }
     }
-    
-    function sortById() {
-            const result = [...filterData]
-            return result.sort((a, b) => a.id > b.id ? 1 : -1)
-        }
     function searchSongsofSinger(name) {
     Newdata = Newdata.concat(copyData.filter(song => song.author === name))
     dispatch(createFilterData({Newdata}))
@@ -72,23 +65,6 @@ export function Filter() {
     dispatch(createFilterData({Newdata}))
     }
     function Singer() {
-        // let state = {isSelected: false}
-        // const handleClick = (state) => {
-        //     this.setState({ isSelected: !this.state.isSelected })
-        //   }
-        // {dataSingers.map(name => <S.FilterLink color={'blue'} key={newKey()} onClick={() => toggleFlag(name)}> {name} </S.FilterLink>)}
-        
-        
-            class Singer extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {isSelected: false}
-                }
-                  render(){
-                    console.log(!this.state.isSelected);
-            return dataSingers.map(name => <S.FilterLink isSelected={this.state.isSelected} key={newKey()} onClick={() =>{this.setState({isSelected: !this.state.isSelected}); toggleFlag(name)}}> {name} </S.FilterLink>)
-        }
-        }
         const toggleFlag = (name) => {
             if(Newdata.length === 0) {
                 searchSongsofSinger(name)
@@ -100,7 +76,7 @@ export function Filter() {
             if (show) {
             return (
                 <S.Show>
-                <S.ShowLink><Singer /></S.ShowLink>
+                <S.ShowLink>{dataSingers.map(name => <S.FilterLink key={newKey()} onClick={() => toggleFlag(name)}> {name} </S.FilterLink>)}</S.ShowLink>
                 </S.Show>  )
             }
         return (
@@ -109,14 +85,16 @@ export function Filter() {
     }
     function Genre() {
         const filterByGenre = (genre) => {
-            const dataFilter = filterData.filter(e => e.genre === genre)
+            Newdata = []
+            dataFilter = copyData.filter(e => e.genre === genre)
             dispatch(createFilterOther({dataFilter}))
-            dispatch(createfilterData({dataFilter}))
+            const dataDefault = dataFilter
+            dispatch(copyCurrentData({dataDefault}))
         }
         if (showGenre) {
             return (
                 <S.Show>
-                <S.ShowLink>{uniqueGenres.map(genre => <S.FilterLink  key={genre} onClick={() => filterByGenre(genre)}> {genre} </S.FilterLink>)}</S.ShowLink>
+                <S.ShowLink>{uniqueGenres.map(genre => <S.FilterLink key={genre} onClick={() => filterByGenre(genre)}> {genre} </S.FilterLink>)}</S.ShowLink>
                 </S.Show>  )
         }
         return (
@@ -125,21 +103,23 @@ export function Filter() {
         }
         
         function Years() {
+            
             const sortByDate = (year) => {
+                console.log(dataDefault.filter(e => e.id !== 8))
                 if(year === 'По умолчанию') {
-                    const dataFilter = sortById()
+                    Newdata = []
+                    dataFilter = copyData
                     dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
                 }
                 if(year === 'Сначала новые'){
+                    Newdata = []
                     const dataFilter = sort().reverse()
                     dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
                 }
                 if(year === 'Сначала старые'){
-                    const dataFilter = sort()
+                    Newdata = []
+                    dataFilter = sort()
                     dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
                 }
             }
             if (showYear) {

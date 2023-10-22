@@ -1,58 +1,50 @@
-import { useEffect } from "react";
-import { DataMyFavorites } from "../components/Tracks/DataMyFavorites";
-import { useGetLikeSongsQuery } from "../QueryApi";
-import { useNavigate } from "react-router-dom";
+
+import { useGetLikeSongsQuery } from "../API/tracks.api";
 import { useDispatch } from "react-redux";
-import { dataFavorite } from "../store/player.slice";
-export const Favorites = (props) => {
-  const navigate = useNavigate()
+import { changeUser, dataFavorite, setLoadingFromApi, setPageName } from "../store/player.slice";
+import DataSong from "../components/Tracks/DataTrack";
+import { useEffect } from "react";
+import { GetNewTokens } from "../API/user.api";
+
+export const Favorites = () => {
+  
   const dispatch = useDispatch()
-useEffect(() => {
-  props.setPage('favorites')
-}, [])
-  useEffect(() => {
-
-    props.setLoading.setLoading(true);
-    const timer = setTimeout(() => {
-      props.setLoading.setLoading(false);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
-
-
-// const {data = [], isLoading, isError } = useGetFavorSongsQuery()
-
-const answer = JSON.parse(localStorage.getItem('Active')).Access
-
-const Mass = {
+  const namePage = 'favorites'
+  const answer = JSON.parse(localStorage.getItem('Access'))
+  const Mass = {
     Authorization: `Bearer ${answer}`,
     "content-type": "application/json",
 }
-
-const { data=[], isLoading, isError } = useGetLikeSongsQuery(Mass)
-if (isLoading) return <h1>Loading...</h1>
-if (isError) {
-  navigate('/login')
-  return
-}
-dispatch(dataFavorite({data}))
-
-
-    const restToDataSong = {
-      data: {data},
-      isPlaying: props.isPlaying.isPlaying, 
-      setTrackName: props.setTrackName.setTrackName,
-      setSongerName: props.setSongerName.setSongerName,
-      setSong: props.setSong.setSong,
-      setDuration: props.setDuration.setDuration,
-      setIsPlaying: props.setIsPlaying.setIsPlaying,
-      song: props.song.song,
-      loading: props.loading.loading
+dispatch(setPageName({namePage}))
+const { data=[], isLoading, isError, isSuccess, error, refetch } = useGetLikeSongsQuery(Mass)
+if (isLoading) {
+  const dataLoading = true
+  dispatch(setLoadingFromApi({dataLoading}))
+  }
+  if(isSuccess) {
+    const dataLoading = false
+    dispatch(setLoadingFromApi({dataLoading}))
+    dispatch(dataFavorite({data}))
+  }
+  useEffect(() => {
+    
+    if(isError) {
+      if(error.status === 401){
+        refreshToken()
+        refetch()
+      }
     }
+  }, [isError, error]);
+
+  
+
+  async function refreshToken() {
+    const refresh = JSON.parse(localStorage.getItem('Refresh'));
+    const user = await GetNewTokens({refresh})
+    dispatch(changeUser({user}))
+  }
+
     return (
-      <DataMyFavorites
-        {...restToDataSong}
-     />
+      <DataSong />
         );
   }
