@@ -417,6 +417,12 @@ body {
   animation: bubble_out 0.6s ease-in-out infinite both;
 }
 
+
+.text-counter {
+  position: absolute;
+  text-align: center
+}
+
 @keyframes bubble_out {
   0%,
   to {
@@ -426,3 +432,4 @@ body {
     transform: scale(1);
   }
 }
+/* background-image: url('../public/img/Ellipse.svg'); */

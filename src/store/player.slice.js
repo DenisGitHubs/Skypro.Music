@@ -12,9 +12,10 @@ const playerSlice = createSlice({
         isShuffle: false, // Флаг состояния включения/выключения режима перемешивания
         playListIsPlaying: [], //плейлист в плеере
         isLoop: false, // флаг включения перемещивания
-        copyData: [], //копия dataDefault для возврата по отключению фильтров
-        filterData: [], // массив для работы с фильтрами
-        copyNowData: [], //копия текущей dataDefault для работы с поиском
+        copyData: [], //копия всех песен для работы с фильтрами
+        dataFilterByGenres: [], // массив песен, полученный в результате работы фильтра по жанрам
+        dataFilterBySingers: [], // массив песен, полученный в результате работы фильтра по певцам
+        copyDataBeforeSearch: [], //копия текущей dataDefault для работы с поиском !!!!!
         dataDefault: [ 
             {id: 1, track: "Guilt", executor: "Nero", album: "Welcome Reality", time: "4:44"},
             {id: 2, track: "Elektro", executor: "Dynoro, Outwork, Mr. Gee", album: "Elektro", time: "2:22", secondname: ""},
@@ -82,19 +83,11 @@ const playerSlice = createSlice({
         categoryCreateList(state, action){
             state.dataDefault = action.payload.dataCategory
         },
-        createFilterData(state, action) {
-            state.dataDefault = [...new Set(action.payload.Newdata)]
-        },
         createCopyData(state, action){
             state.copyData = action.payload.data
         },
-        createFilterOther(state, action){
-            if(action.payload.dataFilter.length > 0){
-            state.dataDefault = action.payload.dataFilter
-        }},
         dataSongs(state, action) {
             state.dataDefault = action.payload.tracks
-            
         },
         activeNewPlaylist(state, action) {
             state.playListIsPlaying = state.dataDefault;
@@ -113,22 +106,58 @@ const playerSlice = createSlice({
                 
             }
         },
-        comeBackData(state, action) {
-            state.dataDefault = action.payload.copyNowData
-        },
         copyCurrentData(state, action) {
-            state.copyNowData = action.payload.dataDefault
+            state.copyDataBeforeSearch = action.payload.dataDefault
         },
-        copyfilterData(state, action) {
-            state.filterData = action.payload.data
+        createDataFilterByGenres(state, action) {
+            state.dataFilterByGenres = action.payload.data
         },
-        createfilterData(state, action) {
-            state.filterData = action.payload.dataFilter
+        createDataFilterBySingers(state, action) {
+            state.dataFilterBySingers = action.payload.data
         },
-        
+        createDataSortByDate(state, action) {
+            state.dataDefault = action.payload.data
+        },
+        createDataSortByAllFilters(state, action) {
+            if(state.dataFilterByGenres.length === 0 && state.dataFilterBySingers.length !== 0){
+                state.dataDefault = state.dataFilterBySingers
+                state.copyDataBeforeSearch = state.dataFilterBySingers
+                return
+            }
+            if(state.dataFilterBySingers.length === 0 && state.dataFilterByGenres.length !== 0){
+                state.dataDefault = state.dataFilterByGenres
+                state.copyDataBeforeSearch = state.dataFilterByGenres
+                return
+            }
+            if(state.dataFilterByGenres.length === 0 && state.dataFilterBySingers.length === 0) {
+                state.dataDefault = state.copyData
+                state.copyDataBeforeSearch = state.copyData
+                return
+            }
+            let result = state.dataFilterBySingers.filter(function(v) {
+                return state.dataFilterByGenres.some(function(v2) {
+                return v.id === v2.id && v.item === v2.item})
+            })
+
+            state.dataDefault = result
+            state.copyDataBeforeSearch = result
+        },
+        createDataBySearch(state, action) {
+            if(action.payload.data.length > 0){
+                state.dataDefault = action.payload.data
+                return
+            }
+            if(action.payload.data.length === 0) {
+                state.dataDefault = []
+                return
+            }
+        },
+        deleteAllFilters(state, action) {
+            state.dataFilterByGenres = []
+            state.dataFilterBySingers = []
+        },
     },
 });
-
 
 export const {activeNewPlaylist} = playerSlice.actions
 export const {dataSongs} = playerSlice.actions
@@ -146,12 +175,14 @@ export const {togglePlayer} = playerSlice.actions // вкл/выкл проиг�
 export const {toggleShaffle} = playerSlice.actions // вкл/выкл флага перемешивания
 export const {dataFavorite} = playerSlice.actions // добавляет полученные любимые песни в DataDefault
 export const {categoryCreateList} = playerSlice.actions // добавляет полученные песни по категориям в список DataDefault
-export const {createFilterData} = playerSlice.actions // изменяем данные DataDefult по фильтру певцов
 export const {createCopyData} = playerSlice.actions // сохраняем копию dataDefault для возврата по необходимости
-export const {createFilterOther} = playerSlice.actions // изменяем данные DataDefult по остальным фильтрам
-export const {comeBackData} = playerSlice.actions // возвращаем изначальный список песен в  DataDefult который был до работы с поиском
+export const {createDataFilterByGenres} = playerSlice.actions // создаем список песен отобранных по фильтру жанров
+export const {createDataFilterBySingers} = playerSlice.actions // создаем список песен отобранных по фильтру певцов
+export const {createDataSortByDate} = playerSlice.actions // добавляем список песен из отображенных, сортированных по дате
+export const {createDataSortByAllFilters} = playerSlice.actions // добавляем список отфильтрованых песен в отображаемый список
 export const {copyCurrentData} = playerSlice.actions // сохранияем текущий список песен в  DataDefult перед работой поиска
-export const {copyfilterData} = playerSlice.actions // создаем список песен для фильтров
-export const {createfilterData} = playerSlice.actions // менянем список песен по фильтрам
+export const {createDataBySearch} = playerSlice.actions // добавляем список песен отфильтрованный через поисковик
+export const {deleteAllFilters} = playerSlice.actions // отчищаем фильтра
+
 
 export default playerSlice.reducer

@@ -1,182 +1,78 @@
 
-import React, { useEffect, useState, Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as S from './SearchFilter.styles.js'
-import { useDispatch, useSelector } from 'react-redux';
-import { copyCurrentData, createFilterData, createFilterOther, createfilterData } from '../../store/player.slice.js';
-const dataYears = ['По умолчанию', 'Сначала новые', 'Сначала старые']
-let dataSingers = []
-let Newdata = []
-let dateSong = []
-let uniqueGenres = []
-let dataFilter = []
+import { Singer } from './components/Author.jsx';
+import { Years } from './components/Date.jsx';
+import { Genre } from './components/Genre.jsx';
 export function Filter() {
-    let idKey = 0;
-    const [checkFilter, setCheckFilter] = useState(null)
     const [show, setShowSinger] = useState(false);
     const [showYear, setShowYear] = useState(false);
-    const [showGenre, setShowGenre] = useState(false)
-    const pageName = useSelector(state => state.player.pageName)
-    const dataDefault = useSelector(state => state.player.dataDefault)
-    const copyData = useSelector(state => state.player.copyData)
-    const load = useSelector(state => state.player.loadingFromApi)
-    const filterData = useSelector(state => state.player.filterData)
-    const dispatch = useDispatch()
-    
-    useEffect(() => {
-        if(Boolean(dataSingers.length === 0)){
-            copyData.map(song => dataSingers.push(song.author))
-            dataSingers = [...new Set(dataSingers)];
-            dataSingers = dataSingers.filter(Boolean)
-        }
-        if(Boolean(dateSong.length === 0)){
-            dataDefault.map(song => dateSong.push(song.release_date))
-            dateSong = dateSong.filter(Boolean)
-        }
-        const genres = copyData.map(item => item.genre)
-        uniqueGenres = [...new Set(genres)];
-    }, [load, pageName])
-    useEffect(() => {
-        if(dataDefault.length === 0) {
-            const Newdata = copyData
-            dispatch(createFilterData({Newdata}))
-        }    
-    }, [dataDefault.length])
-    const newKey = () => {
-    idKey = idKey + 1;
-    return idKey
-    }
-    function sort() {
-    if('executor' in dataDefault[0]){
-        return
-    } else {
-        const pattern = '-'
-        const arr = filterData.filter(element => element.release_date != null)
-        const arr2 = arr.map(item => item.release_date)
-        const arr3 = arr2.map(e => (e.split(pattern))).map(item => item.map(el => Number(el)))
-        const arr4 = arr3.map((e) => ({date: new Date(e[0], e[1], e[2]).getTime()}))
-        const arr5 = arr.map((item, index) => ({...item, ...arr4[index]}))
-        return arr5.sort((a, b) => parseFloat(a.date) - parseFloat(b.date),)
-    }
-    }
-    
-    function sortById() {
-            const result = [...filterData]
-            return result.sort((a, b) => a.id > b.id ? 1 : -1)
-        }
-    function searchSongsofSinger(name) {
-    Newdata = Newdata.concat(copyData.filter(song => song.author === name))
-    dispatch(createFilterData({Newdata}))
-    }
-    function deleteSongsofSinger(name) {
-    Newdata = Newdata.filter(song => song.author !== name)
-    dispatch(createFilterData({Newdata}))
-    }
-    function Singer() {
-        // let state = {isSelected: false}
-        // const handleClick = (state) => {
-        //     this.setState({ isSelected: !this.state.isSelected })
-        //   }
-        // {dataSingers.map(name => <S.FilterLink color={'blue'} key={newKey()} onClick={() => toggleFlag(name)}> {name} </S.FilterLink>)}
-        
-        
-            class Singer extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {isSelected: false}
-                }
-                  render(){
-                    console.log(!this.state.isSelected);
-            return dataSingers.map(name => <S.FilterLink isSelected={this.state.isSelected} key={newKey()} onClick={() =>{this.setState({isSelected: !this.state.isSelected}); toggleFlag(name)}}> {name} </S.FilterLink>)
-        }
-        }
-        const toggleFlag = (name) => {
-            if(Newdata.length === 0) {
-                searchSongsofSinger(name)
-            } else {
-            if(dataDefault.find(el => el.author === name)) {
-                deleteSongsofSinger(name)
-            } else {
-                searchSongsofSinger(name)}}}
-            if (show) {
-            return (
-                <S.Show>
-                <S.ShowLink><Singer /></S.ShowLink>
-                </S.Show>  )
-            }
-        return (
-            <S.NotShow></S.NotShow>
-        )
-    }
-    function Genre() {
-        const filterByGenre = (genre) => {
-            const dataFilter = filterData.filter(e => e.genre === genre)
-            dispatch(createFilterOther({dataFilter}))
-            dispatch(createfilterData({dataFilter}))
-        }
-        if (showGenre) {
-            return (
-                <S.Show>
-                <S.ShowLink>{uniqueGenres.map(genre => <S.FilterLink  key={genre} onClick={() => filterByGenre(genre)}> {genre} </S.FilterLink>)}</S.ShowLink>
-                </S.Show>  )
-        }
-        return (
-            <S.NotShow></S.NotShow>
-        )
-        }
-        
-        function Years() {
-            const sortByDate = (year) => {
-                if(year === 'По умолчанию') {
-                    const dataFilter = sortById()
-                    dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
-                }
-                if(year === 'Сначала новые'){
-                    const dataFilter = sort().reverse()
-                    dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
-                }
-                if(year === 'Сначала старые'){
-                    const dataFilter = sort()
-                    dispatch(createFilterOther({dataFilter}))
-                    dispatch(createfilterData({dataFilter}))
-                }
-            }
-            if (showYear) {
-            return (
-                <S.Show>
-                <S.ShowLink>{dataYears.map(year => <S.FilterLink key={year} onClick={() => sortByDate(year)}> {year} </S.FilterLink>)}</S.ShowLink>
-                </S.Show>  )
-            }
-            return (
-                <S.NotShow></S.NotShow>
-            )
-        }
+    const [showGenre, setShowGenre] = useState(false);
+    const [flagFilterSingers, setFlagFilterSingers] = useState(false)
+    const [counterSingers, setCounterSingers] = useState(0);
+    const [flagFilterGenres, setFlagFilterGenres] = useState(false)
+    const [counterGenres, setCounterGenres] = useState(0);
+    const [flagSortYears, setFlagSortYears] = useState(false)
+    const [counterYears, setCounterYears] = useState(0);
+    const propsDate = {
+        show: show,
+        showYear: showYear,
+        showGenre: showGenre,
+        setCounterSingers: setCounterSingers,
+        counterSingers: counterSingers,
+        counterGenres: counterGenres,
+        setCounterGenres: setCounterGenres,
+        setCounterYears: setCounterYears,
+  }
+useEffect(() => {
+  if(counterSingers === 0) {
+    setFlagFilterSingers(false)
+  } else {
+    setFlagFilterSingers(true)
+  }
+}, [counterSingers])
+useEffect(() => {
+  if(counterGenres === 0) {
+    setFlagFilterGenres(false)
+  } else {
+    setFlagFilterGenres(true)
+  }
+}, [counterGenres])
 
-    return (<S.CenterblockFilter disabled={false}>
+useEffect(() => {
+  if(counterYears === 0) {
+    setFlagSortYears(false)
+  } else {
+    setFlagSortYears(true)
+  }
+}, [counterYears])
+
+    return (<S.CenterblockFilter >
     <S.FilterTitle>Искать по:</S.FilterTitle>
-    <div>
+    <S.FilterBox >
+        <div>
+            <S.CounterImg flag={flagFilterSingers}><S.CounterText>{counterSingers}</S.CounterText></S.CounterImg>
+        </div>
     <div  tabIndex="0" className="filter__button _btn-text" onClick={() => {setShowSinger(!show); setShowYear(false); setShowGenre(false)}}>
       исполнителю
     </div>
-    <Singer/>
-    </div>
+    <Singer propsDate={propsDate} setCounterSingers={setCounterSingers} />
+    </S.FilterBox>
+    <S.FilterBox >
     <div>
+            <S.CounterImg flag={flagSortYears}><S.CounterText>{counterYears}</S.CounterText></S.CounterImg>
+        </div>
     <div tabIndex="0" className="filter__button button-year _btn-text" onClick={() => {setShowYear(!showYear); setShowSinger(false); setShowGenre(false)}}>
       году выпуска
     </div>
-    <Years/>
-    </div>
+    <Years propsDate={propsDate}/>
+    </S.FilterBox>
+    <S.FilterBox >
     <div>
+            <S.CounterImg flag={flagFilterGenres}><S.CounterText>{counterGenres}</S.CounterText></S.CounterImg>
+      </div>
     <div tabIndex="0" className="filter__button button-genre _btn-text" onClick={() => {setShowGenre(!showGenre); setShowSinger(false); setShowYear(false)}}>жанру</div>
-    <Genre />
-    </div>
+    <Genre propsDate={propsDate}/>
+    </S.FilterBox>
   </S.CenterblockFilter>)
 }
-
-
-
-
-
-
-
